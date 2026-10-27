@@ -120,6 +120,27 @@ const $=id=>document.getElementById(id);const canvas=$('court'),ctx=canvas.getCo
 const chars=[{name:'BLAZE',jersey:'#fb6a38',skin:'#d6a17a',hair:'#28222a'},{name:'ICE',jersey:'#4cb8f5',skin:'#f0c6a0',hair:'#47382f'},{name:'VOLT',jersey:'#a3e635',skin:'#8c5a3c',hair:'#151515'},{name:'SHADOW',jersey:'#a78bfa',skin:'#e2b18e',hair:'#171923'},{name:'ROOKIE',jersey:'#facc15',skin:'#b9784c',hair:'#3d2920'}];
 let selected=0,mode='1v1',roomCode='',roomPassword='',created=false,playing=false,quarter=1,quarterMinutes=3,timeLeft=180,score=0,rival=0,charge=0,charging=false,last=0,toastTimer=0,keys={},player={x:0,z:7,jump:0,vz:0,hasBall:true,dribble:false,shield:0},ball={x:0,z:7,y:0,flight:0,fromX:0,fromZ:0,toX:0,toZ:0,kind:'shot'},rivalPlayer={x:1.4,z:3.6,hasBall:false},shotResult='';
 const randCode=()=>{const letters='ABCDEFGHJKLMNPQRSTUVWXYZ';return Array.from({length:3},()=>letters[Math.floor(Math.random()*letters.length)]).join('')};
+  window.COURT_CLASH_GAME = {
+  get mode() { return mode; },
+  set mode(v) { mode = v; },
+  get roomCode() { return roomCode; },
+  set roomCode(v) { roomCode = v; },
+  get created() { return created; },
+  set created(v) { created = v; },
+  get playing() { return playing; },
+  get player() { return player; },
+  get ball() { return ball; },
+  get score() { return score; },
+  get rival() { return rival; },
+  set rival(v) { rival = v; },
+  get rivalPlayer() { return rivalPlayer; },
+  applyPeer(s) {
+    if (!s) return;
+    rivalPlayer.x = s.x;
+    rivalPlayer.z = s.z;
+    rivalPlayer.hasBall = s.hasBall;
+  }
+};
 function buildChars(){const g=$('characterGrid');g.innerHTML='';chars.forEach((c,i)=>{let el=document.createElement('div');el.className='char'+(i===selected?' selected':'');el.innerHTML=`<div class="avatar" style="--jersey:${c.jersey};--skin:${c.skin}"><span class="head"></span><span class="body"></span><span class="leg l"></span><span class="leg r"></span></div><b>${c.name}</b>`;el.onclick=()=>{selected=i;buildChars();};g.appendChild(el)})}buildChars();
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));$('modeLabel').textContent='/ '+mode.toUpperCase();updateSettings()});
 function updateSettings(){$('settingsText').textContent=`${mode.toUpperCase()} · 4쿼터 · 쿼터당 ${quarterMinutes}분`}
