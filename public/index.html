@@ -708,7 +708,7 @@ updateShotControls();draw();updateSettings();setAimReadout();
   // Let the normal create handler generate the three-character code, then register it.
   el('createBtn')?.addEventListener('click',()=>setTimeout(()=>{
     if(!connected){message('서버에 연결되지 않았습니다. 배포된 서버 주소에서 접속해 주세요.');return;}
-    net.emit('create-room',{code:roomCode,password:el('roomPass')?.value||'',mode:mode},res=>{
+    net.emit('create-room',{code:(el('roomStatus')?.textContent||'').replace(/^ROOM\s*/,'').trim(),password:el('roomPass')?.value||'',mode:mode},res=>{
       if(!res?.ok){message(res?.message||'방 생성 실패');return;} netRoom=true;setStatus(`ONLINE ROOM ${res.code}`);message(`온라인 방 생성 완료! 코드 ${res.code}와 비밀번호를 친구에게 알려주세요.`);
     });
   },0));
