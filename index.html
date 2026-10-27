@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COURT CLASH — 농구 게임</title>
+<style>
+:root{color-scheme:light dark;--site-primary:#f97316;--site-secondary:#172554;--site-background:#0b1220;--site-on-primary:#ffffff;--site-on-secondary:#ffffff;--site-on-background:#f8fafc;--site-font-body:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;--site-font-heading:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;--site-heading-scale:1;--site-spacing-scale:1;--site-radius-scale:1;--site-decoration-opacity:1}
+*{box-sizing:border-box}body{margin:0;font-family:var(--site-font-body);background:#080d18;color:#f8fafc}button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;font-weight:800;background:var(--site-primary);color:white;transition:.15s}button:hover{filter:brightness(1.1);transform:translateY(-1px)}button.secondary{background:#202c42;border:1px solid #35445d;color:#e5edf9}button:disabled{opacity:.4;cursor:not-allowed;transform:none}.app{min-height:100vh;background:radial-gradient(ellipse at 80% -10%,#233d68 0%,#0b1220 50%,#080d18 100%);padding:24px clamp(14px,4vw,52px) 40px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1280px;margin:0 auto 26px}.brand{display:flex;align-items:center;gap:12px}.logo{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#f97316;font-size:24px;box-shadow:0 8px 30px #f9731640}.brand strong{font-size:18px;letter-spacing:1.6px}.brand small{display:block;color:#91a2bc;font-size:11px;letter-spacing:2px;margin-top:3px}.pill{border:1px solid #2b3b55;background:#101b2d;color:#b7c6dc;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:800}.layout{max-width:1280px;margin:auto;display:grid;grid-template-columns:minmax(280px,390px) 1fr;gap:22px;align-items:start}.panel{background:linear-gradient(145deg,#111d30,#0d1625);border:1px solid #26364e;border-radius:22px;padding:24px;box-shadow:0 18px 60px #0003}.eyebrow{color:#fb923c;font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.panel h1,.panel h2{margin:8px 0 10px;letter-spacing:-.6px}.panel h1{font-size:30px;line-height:1.1}.muted{color:#9aabc4;font-size:13px;line-height:1.6}.field{display:flex;flex-direction:column;gap:7px;margin-top:18px}.field label{font-size:12px;color:#c4d1e4;font-weight:800}.field input,.field select{width:100%;border-radius:11px;border:1px solid #34455f;background:#0a1321;color:#f8fafc;padding:12px;outline:none}.field input:focus,.field select:focus{border-color:#fb923c}.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.seg button{background:#0a1321;border:1px solid #34455f;color:#aebed3}.seg button.active{background:#f97316;border-color:#f97316;color:white}.rowbtn{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:20px}.line{height:1px;background:#26364e;margin:22px 0}.smalltitle{font-size:12px;color:#9aabc4;font-weight:900;letter-spacing:1.4px;margin-bottom:10px}.character-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.char{padding:8px 3px 10px;background:#0a1321;border:1px solid #2c3d56;border-radius:13px;text-align:center;color:#c7d3e5;cursor:pointer}.char.selected{border:2px solid #fb923c;background:#3a2116;color:white;padding:7px 2px 9px}.avatar{width:38px;height:48px;margin:0 auto 6px;position:relative}.avatar .head{position:absolute;width:18px;height:18px;left:10px;top:1px;border-radius:50%;background:var(--skin,#d5a17a);border:2px solid #0a1321}.avatar .body{position:absolute;left:6px;top:17px;width:27px;height:23px;border-radius:8px 8px 4px 4px;background:var(--jersey,#f97316);border:2px solid #f4f6fa}.avatar .leg{position:absolute;top:38px;width:8px;height:10px;background:#e5e7eb;border-radius:3px}.avatar .leg.l{left:10px}.avatar .leg.r{right:7px}.char b{font-size:10px;display:block}.right{min-width:0}.hero{border:1px solid #2a3c56;border-radius:22px;overflow:hidden;background:#101b2d;position:relative}.herohead{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;gap:12px;background:#101b2d}.herohead h2{font-size:17px;margin:0}.status{font-size:11px;color:#9bb0cd;font-weight:900;letter-spacing:1px}.arena{position:relative;background:#080f1b;min-height:370px}.arena canvas{width:100%;height:auto;display:block;aspect-ratio:1.62}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}.center-card{background:#08101ee8;border:1px solid #344660;backdrop-filter:blur(12px);border-radius:18px;padding:22px 26px;text-align:center;max-width:340px;box-shadow:0 18px 70px #0008}.center-card h2{font-size:25px;margin:0 0 8px}.center-card p{font-size:13px;color:#b6c5d9;line-height:1.5;margin:0 0 15px}.gamehud{display:none;position:absolute;inset:0;pointer-events:none}.scoreboard{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:#07101be8;border:1px solid #53647b;border-radius:13px;padding:10px 16px;white-space:nowrap}.team-score{text-align:center;font-size:11px;color:#9eb0c9;font-weight:800}.team-score strong{display:block;color:white;font-size:23px}.clock{font-size:15px;font-weight:900}.qtag{position:absolute;left:14px;top:14px;background:#07101be8;border:1px solid #344660;border-radius:10px;padding:9px 11px;font-size:12px;font-weight:900}.toast{position:absolute;top:68px;left:50%;transform:translateX(-50%);background:#f97316;color:white;border-radius:99px;padding:8px 15px;font-weight:900;font-size:12px;opacity:0;transition:opacity .2s}.toast.show{opacity:1}.powerwrap{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);width:min(290px,65%);background:#07101be8;border:1px solid #344660;border-radius:12px;padding:9px 12px}.powerlabel{display:flex;justify-content:space-between;font-size:10px;font-weight:900;margin-bottom:6px}.powertrack{height:10px;background:#26344a;border-radius:99px;overflow:hidden}.powerfill{height:100%;width:0;background:linear-gradient(90deg,#38bdf8,#a3e635,#f97316);border-radius:99px}.controls{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;padding:16px;background:#0d1727;border-top:1px solid #293a53}.keygrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.key{border:1px solid #354760;border-radius:10px;background:#142137;padding:8px 4px;text-align:center;font-size:10px;color:#c6d4e7}.key b{display:block;font-size:13px;color:#fff;margin-bottom:3px}.key.active{background:#633515;border-color:#fb923c}.instructions{font-size:11px;line-height:1.7;color:#93a5bf}.instructions b{color:#e9f0fa}.bottomrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.info{background:#101b2d;border:1px solid #26364e;border-radius:18px;padding:17px}.info h3{margin:0 0 10px;font-size:13px}.info p{margin:0;color:#9eafc7;font-size:12px;line-height:1.7}.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.tag{font-size:10px;border-radius:99px;background:#1a2b43;color:#cbd8e9;padding:6px 9px}.message{font-size:12px;color:#fbba79;min-height:18px;margin-top:12px}.hidden{display:none!important}.joinrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mobilehint{display:none;color:#94a8c3;font-size:11px;margin-top:10px}@media(max-width:920px){.layout{grid-template-columns:1fr}.right{order:2}.left{order:1}.arena{min-height:240px}.bottomrow{grid-template-columns:1fr}}@media(max-width:560px){.app{padding:16px 10px 25px}.top{align-items:flex-start}.panel{padding:18px}.panel h1{font-size:25px}.herohead{padding:13px}.scoreboard{gap:8px;padding:8px 10px}.team-score strong{font-size:18px}.clock{font-size:12px}.qtag{top:9px;left:8px}.controls{grid-template-columns:1fr}.character-grid{gap:5px}.avatar{transform:scale(.85);margin-bottom:0}.char b{font-size:9px}.mobilehint{display:block}}
+/* COURT CLASH visual/gameplay overhaul */
+#appRoot{background:radial-gradient(ellipse at 50% -18%,#233957 0%,#0b1422 44%,#070b12 100%)}
+.panel,.hero,.info{border-color:#30435d;box-shadow:0 18px 55px #0005}.panel{background:linear-gradient(150deg,#121e30,#0a111d)}
+.brand strong{font-size:20px;letter-spacing:2.3px}.logo{background:linear-gradient(140deg,#ff8a28,#f04418);box-shadow:0 7px 28px #ff6b244d}
+button{background:linear-gradient(135deg,#ff8133,#ef4c1c);box-shadow:0 5px 16px #ef4c1c25}.seg button.active,.char.selected{background:linear-gradient(145deg,#472719,#241811);border-color:#ff8738;box-shadow:0 0 0 1px #ff873855,inset 0 0 20px #ff87381b}
+.char{transition:transform .16s,border-color .16s,background .16s}.char:hover{transform:translateY(-3px);border-color:#6885a8}.hero{background:#0a111d}.arena{background:#08111c;min-height:0}
+.center-card{pointer-events:auto;background:linear-gradient(145deg,#101c2cf5,#080f19f5);border-color:#ff87386e;box-shadow:0 24px 80px #0009,0 0 48px #f9731618}.center-card h2{letter-spacing:-.7px}.center-card button{min-width:190px}
+.powerwrap{width:min(340px,60%);padding:11px 14px;border-color:#52647c;background:#07101bef;box-shadow:0 8px 28px #0005}.powertrack{position:relative;height:12px;background:#1b2a3f}.powertrack:after{content:"";position:absolute;z-index:2;left:72%;top:-2px;bottom:-2px;width:3px;border-radius:3px;background:#fff;box-shadow:0 0 9px #fff}.powerfill{transition:width .04s linear;box-shadow:0 0 12px #a3e6354a}
+#exitGameBtn{display:none;position:fixed;z-index:10002;right:18px;top:16px;padding:10px 14px;background:#0d1929ef;border:1px solid #5b6d83;color:#fff;border-radius:11px;box-shadow:0 5px 18px #0007;pointer-events:auto}
+#appRoot.game-active{position:fixed;inset:0;z-index:10000;width:100vw;height:100dvh;min-height:0;overflow:hidden;padding:0;background:#050a11}
+#appRoot.game-active .top,#appRoot.game-active #setupPanel,#appRoot.game-active .herohead,#appRoot.game-active .controls,#appRoot.game-active .bottomrow{display:none!important}
+#appRoot.game-active .layout,#appRoot.game-active .right,#appRoot.game-active .hero{display:block;width:100%;height:100%;max-width:none;min-width:0;margin:0;border:0;border-radius:0;box-shadow:none;background:#050a11}
+#appRoot.game-active .arena{position:relative;width:100%;height:100dvh;min-height:0;background:#050a11}#appRoot.game-active .arena canvas{width:100%;height:100%;display:block;aspect-ratio:auto}
+#appRoot.game-active .overlay{z-index:6}#appRoot.game-active .gamehud{z-index:5}#appRoot.game-active #exitGameBtn{display:block}
+@media(max-width:560px){#appRoot.game-active #exitGameBtn{top:9px;right:9px;padding:8px 10px;font-size:12px}.powerwrap{width:72%;bottom:12px}.scoreboard{top:10px}}
+
+/* PREMIUM COURT CLASH REDESIGN */
+:root{--cc-orange:#ff6b35;--cc-lime:#c8ff68;--cc-ice:#dceeff}
+#appRoot.game-active .arena{overflow:hidden;background:#070c15}
+#appRoot.game-active .arena canvas{width:100%;height:100%;aspect-ratio:16/9;image-rendering:auto;filter:saturate(1.07)}
+#appRoot.game-active .scoreboard{top:16px;padding:10px 22px;gap:24px;min-width:270px;justify-content:center;background:linear-gradient(180deg,#111d2cf2,#07101df5);border:1px solid #71849a66;border-radius:17px;box-shadow:0 12px 38px #0007,inset 0 1px #ffffff18;backdrop-filter:blur(12px)}
+#appRoot.game-active .team-score{font-size:10px;letter-spacing:2px;color:#9db3ca}
+#appRoot.game-active .team-score strong{font-size:29px;line-height:1.05;margin-top:3px;text-shadow:0 2px 15px #ffffff18}
+#appRoot.game-active .team-score:first-child strong{color:#ffb37b}
+#appRoot.game-active .team-score:last-child strong{color:#8fc7ff}
+#appRoot.game-active .clock{font-size:18px;min-width:68px;text-align:center;font-variant-numeric:tabular-nums}
+#appRoot.game-active .qtag{top:18px;left:18px;background:#07111ddd;border:1px solid #71849a55;border-radius:12px;padding:10px 13px;letter-spacing:1.4px;box-shadow:0 8px 25px #0005}
+#appRoot.game-active .toast{top:78px;right:18px;left:auto;transform:none;padding:11px 19px;background:linear-gradient(135deg,#ff8d45,#e84d22);font-size:13px;letter-spacing:.5px;box-shadow:0 10px 30px #0006,0 0 28px #ff6b3533}
+#appRoot.game-active #aimReadout{top:78px;left:18px;transform:none;text-align:left;padding:9px 15px;border:1px solid #8ba1b855;background:#08111ddd;color:#eaf4ff;border-radius:12px;font-size:11px;letter-spacing:.7px;box-shadow:0 8px 30px #0005;backdrop-filter:blur(10px)}
+#appRoot.game-active .powerwrap{bottom:24px;width:min(510px,64vw);padding:15px 18px 17px;border-radius:17px;border:1px solid #a9bfd23d;background:linear-gradient(180deg,#101c2eec,#060d18f5);box-shadow:0 18px 45px #0008,inset 0 1px #ffffff12;backdrop-filter:blur(13px)}
+#appRoot.game-active .powerlabel{align-items:center;margin-bottom:11px;font-size:11px;letter-spacing:1.1px;color:#deebfa}
+#appRoot.game-active .powerlabel span:first-child{font-size:11px;font-weight:950;color:#f4f8ff}
+#appRoot.game-active .powerlabel span:last-child{font-size:11px;color:#d4e1ef;font-variant-numeric:tabular-nums}
+#appRoot.game-active .powertrack{height:19px;border:1px solid #ffffff19;border-radius:5px;overflow:visible;background:linear-gradient(90deg,#2b94d9 0%,#56c6cf 28%,#a8dd70 58%,#ffd061 79%,#ff784c 100%);box-shadow:inset 0 2px 5px #0007;}
+#appRoot.game-active .powerfill{height:100%;width:0%;border-radius:4px;background:linear-gradient(180deg,#ffffffed,#edf6ffb0);box-shadow:0 0 16px #ffffffa0;border-right:2px solid white;transition:none;position:relative;z-index:1;}
+#appRoot.game-active .bestmark{z-index:4;left:50%;top:-7px;bottom:-7px;width:3px;background:#fff;border-radius:3px;box-shadow:0 0 0 1px #0a1322,0 0 12px #fff,0 0 24px #fff8;transition:left .1s linear;}
+#appRoot.game-active .bestmark:before{content:'PERFECT';position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:1.1px;font-weight:1000;color:#fff;white-space:nowrap;text-shadow:0 1px 6px #000;}
+#appRoot.game-active .bestmark:after{content:'';position:absolute;left:-5px;top:0;width:11px;height:11px;transform:translateY(-2px) rotate(45deg);background:#fff;border-radius:2px;box-shadow:0 0 12px #fff8}
+#appRoot.game-active #exitGameBtn{top:18px;right:18px;background:#0b1422e8;border-color:#8da1b855;border-radius:12px;box-shadow:0 8px 25px #0006}
+#appRoot.game-active #exitGameBtn:hover{background:#18283e}
+#appRoot.game-active .center-card{border:1px solid #ff9a6277;border-radius:24px;background:linear-gradient(145deg,#142338f5,#080f1bf7);box-shadow:0 30px 100px #000b,0 0 70px #ff73351a;padding:30px 32px;}
+#appRoot.game-active .center-card h2{font-size:30px;letter-spacing:1px}
+#appRoot.game-active .center-card p{font-size:14px;line-height:1.8}
+#appRoot.game-active .center-card button{padding:15px 24px;border-radius:13px;letter-spacing:.3px}
+@media(max-width:700px){#appRoot.game-active .scoreboard{top:10px;gap:13px;padding:8px 13px;min-width:220px}#appRoot.game-active .team-score strong{font-size:22px}#appRoot.game-active .clock{font-size:15px}#appRoot.game-active .qtag{top:10px;left:8px;padding:8px;font-size:9px}#appRoot.game-active #exitGameBtn{top:10px;right:8px;font-size:10px;padding:8px}#appRoot.game-active #aimReadout{top:60px;left:8px;max-width:40vw;overflow:hidden;text-overflow:ellipsis;font-size:9px}#appRoot.game-active .powerwrap{bottom:12px;width:78vw;padding:12px 13px 14px}#appRoot.game-active .toast{top:60px;right:8px;max-width:43vw;white-space:normal;text-align:center;font-size:9px}}
+
+
+/* FREE THROW + COURTSIDE ANIMATION POLISH */
+.free-throw-info{position:absolute;z-index:7;left:50%;top:48%;transform:translate(-50%,-50%);width:min(360px,80vw);padding:22px 24px;border:1px solid #ffb9797a;border-radius:20px;text-align:center;pointer-events:none;background:linear-gradient(145deg,#142339f5,#070d17f5);box-shadow:0 22px 80px #000c,0 0 46px #ff8b3722;backdrop-filter:blur(15px)}
+.free-throw-info .ft-kicker{font-size:10px;letter-spacing:3px;font-weight:1000;color:#ffc27d}
+.free-throw-info .ft-title{font-size:27px;letter-spacing:1px;font-weight:1000;margin:5px 0 8px;color:#fff}
+.free-throw-info p{margin:0;color:#d5e1ef;font-size:12px;line-height:1.75}
+#appRoot.game-active .free-throw-info{animation:ft-pop .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes ft-pop{from{opacity:0;transform:translate(-50%,-45%) scale(.94)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+#appRoot.game-active .bestmark[data-free-throw="true"]:before{content:'TARGET';color:#fff2aa}
+#appRoot.game-active .bestmark[data-free-throw="true"]{box-shadow:0 0 0 1px #0a1322,0 0 14px #fff6b0,0 0 28px #fff8}
+#appRoot.game-active .scoreboard{left:auto;right:126px;transform:none}
+@media(max-width:560px){#appRoot.game-active .scoreboard{right:88px;top:8px;gap:7px;padding:7px 9px}}
+
+</style>
+<style>
+/* Lobby is a setup-only screen; the court exists visually only during play. */
+#appRoot:not(.game-active) .right{display:none!important}
+#appRoot:not(.game-active) .layout{display:block;max-width:920px;margin:0 auto}
+#appRoot:not(.game-active) #setupPanel{width:100%;max-width:920px;margin:24px auto;padding:clamp(20px,4vw,40px);background:linear-gradient(145deg,#151f31,#0a101b);border-color:#3a4a63}
+#appRoot:not(.game-active) #setupPanel h1{font-size:clamp(34px,5vw,52px);line-height:1.08;margin-top:14px}
+#appRoot:not(.game-active) .top{max-width:920px}
+#appRoot.game-active .right{display:block!important}
+#appRoot.game-active .arena{background:#07101b}
+#appRoot.game-active .arena canvas{image-rendering:auto}
+#appRoot.game-active .powerwrap{width:min(360px,70%);bottom:20px;padding:12px 14px;background:#06101df2;border-color:#435872}
+#appRoot.game-active .powertrack{height:15px;overflow:visible;position:relative;background:#1b2a3c}
+#appRoot.game-active .powertrack:after{display:none}
+#appRoot.game-active .powerfill{background:linear-gradient(90deg,#fb923c 0%,#facc15 48%,#86efac 100%);box-shadow:0 0 14px #86efac45;transition:width .15s}
+.bestmark{position:absolute;z-index:3;left:82%;top:-5px;bottom:-5px;width:3px;border-radius:4px;background:#bbf7d0;box-shadow:0 0 10px #86efac;pointer-events:none}
+#aimReadout{position:absolute;left:50%;top:64px;transform:translateX(-50%);padding:9px 14px;border:1px solid #334a63;border-radius:12px;background:#07111eea;color:#e9f2ff;white-space:nowrap;font-size:12px;font-weight:900;letter-spacing:.3px;box-shadow:0 8px 25px #0005}
+#appRoot.game-active .gamehud .toast{top:112px}
+#appRoot.game-active .center-card{max-width:420px}
+#appRoot.game-active .controls,#appRoot.game-active .herohead,#appRoot.game-active .bottomrow{display:none!important}
+@media(max-width:560px){#appRoot:not(.game-active) .top{gap:8px;flex-wrap:wrap}#appRoot:not(.game-active) #setupPanel{margin-top:10px}#aimReadout{top:61px;font-size:10px;padding:8px 9px;max-width:90%;overflow:hidden;text-overflow:ellipsis}.bestmark{left:82%}}
+</style>
+</head>
+<body>
+<div class="app" id="appRoot">
+<header class="top"><div class="brand"><div class="logo">🏀</div><div><strong>COURT CLASH</strong><small>2D BASKETBALL · PLAY YOUR GAME</small></div></div><div class="pill">PROTOTYPE 0.2 · LOCAL TEST</div></header>
+<div class="layout">
+<section class="panel left" id="setupPanel">
+<div class="eyebrow">CREATE YOUR COURT</div><h1>오늘 코트의<br>주인공은 너야.</h1><p class="muted">방을 만들고 경기 규칙과 캐릭터를 정해봐. 온라인 연동 전 단계라 현재는 로컬 테스트용이야.</p>
+<div class="field"><label>경기 모드</label><div class="seg"><button class="active" data-mode="1v1">1 VS 1</button><button data-mode="2v2">2 VS 2</button></div></div>
+<div class="field"><label for="quarterMinutes">쿼터당 경기 시간</label><select id="quarterMinutes"><option value="1">1분 (테스트)</option><option value="2">2분</option><option value="3" selected>3분</option><option value="5">5분</option><option value="8">8분</option><option value="10">10분</option></select></div>
+<div class="field"><label for="roomPass">방 비밀번호 설정</label><input id="roomPass" type="password" placeholder="방에 들어올 때 사용할 비밀번호" maxlength="20"></div>
+<div class="rowbtn"><button id="createBtn">＋ 방 만들기</button><button class="secondary" id="quickBtn">바로 연습하기</button></div>
+<div class="line"></div><div class="smalltitle">JOIN A ROOM · 방 참가 (연동 준비 UI)</div>
+<div class="field"><label for="roomCodeInput">3글자 방 코드</label><input id="roomCodeInput" placeholder="예: BQK" maxlength="3" style="text-transform:uppercase"></div><div class="field"><label for="joinPass">방 비밀번호</label><input id="joinPass" type="password" placeholder="방 비밀번호"></div><button class="secondary" id="joinBtn" style="width:100%;margin-top:12px">코드로 참가 시도</button><div class="message" id="roomMessage" aria-live="polite"></div>
+<div class="line"></div><div class="smalltitle">CHOOSE YOUR PLAYER · 캐릭터 선택</div><p class="muted">디자인 5종 중 하나를 골라봐. 선택한 캐릭터가 코트에 등장해.</p><div class="character-grid" id="characterGrid"></div>
+</section>
+<section class="right">
+<div class="hero"><div class="herohead"><h2>🏟️ MAIN COURT <span class="status" id="modeLabel">/ 1 VS 1</span></h2><span class="status" id="roomStatus">ROOM NOT CREATED</span></div>
+<div class="arena"><canvas id="court" width="1000" height="615" aria-label="농구 코트 게임 화면"></canvas>
+<div class="overlay" id="startOverlay"><div class="center-card"><div style="font-size:34px;margin-bottom:7px">🏀</div><h2>READY TO TIP OFF?</h2><p>방을 만들거나 바로 연습하기를 눌러<br>점프볼로 경기를 시작해.</p><button id="startBtn">경기 시작하기 →</button></div></div>
+<div class="overlay hidden" id="quarterOverlay"><div class="center-card"><div class="eyebrow">END OF QUARTER</div><h2 id="quarterTitle">QUARTER 2</h2><p id="quarterText">잠깐 숨을 고르고 다음 쿼터를 준비해.</p><button id="nextQuarterBtn">다음 쿼터 시작 →</button></div></div>
+<div class="overlay hidden" id="endOverlay"><div class="center-card"><div class="eyebrow">FINAL BUZZER</div><h2>GAME OVER</h2><p id="finalText">경기가 종료됐어.</p><button id="restartBtn">다시 경기하기 ↻</button></div></div>
+<div class="gamehud" id="gameHud"><div class="qtag" id="qTag">QUARTER 1</div><div class="scoreboard"><div class="team-score">YOU<strong id="youScore">0</strong></div><div class="clock" id="clock">03:00</div><div class="team-score">RIVAL<strong id="rivalScore">0</strong></div></div><div class="toast" id="toast">NICE SHOT!</div><div class="powerwrap"><div class="powerlabel"><span>SHOT POWER</span><span id="powerPct">0%</span></div><div class="powertrack"><div class="powerfill" id="powerFill"></div></div></div></div>
+</div>
+<div class="controls"><div><div class="smalltitle">KEYBOARD CONTROLS</div><div class="keygrid" id="keyGrid"><div class="key" data-key="w"><b>W A S D</b>이동</div><div class="key" data-key=" "><b>SPACE</b>점프</div><div class="key" data-key="control"><b>CTRL</b>드리블 기술</div><div class="key" data-key="r"><b>R</b>슛 / 차징</div><div class="key" data-key="f"><b>f</b>스틸</div><div class="key" data-key="p"><b>p</b>팀 패스</div><div class="key" data-key="dunk"><b>SPACE + R</b>덩크</div><div class="key" data-key="smash"><b>공중 CTRL + R</b>스매시 덩크</div></div></div><div class="instructions"><b>플레이 팁</b><br>• <b>R 길게 누르기</b>: 슛 파워 차징, 놓으면 발사<br>• <b>SPACE + R</b>: 골대 근처에서 덩크 시도<br>• <b>공중 CTRL + R</b>: 스매시 덩크 연출<br>• <b>CTRL</b>: 드리블 보호 상태로 스틸 방어<br>• <b>F</b>: 상대 근처에서 공 뺏기 시도<br>• <b>P</b>: 2대2 모드의 팀 패스 (1대1에서는 비활성)</div><div class="mobilehint">키보드 조작은 데스크톱에서 가장 잘 작동해.</div></div>
+</div>
+<div class="bottomrow"><div class="info"><h3>📋 MATCH SETTINGS</h3><p id="settingsText">1 VS 1 · 4쿼터 · 쿼터당 3분</p><div class="tagrow"><span class="tag">4 QUARTERS</span><span class="tag">JUMP BALL</span><span class="tag">SHOT CHARGE</span><span class="tag">3-POINT LINE</span></div></div><div class="info"><h3>🧪 PROTOTYPE NOTE</h3><p>현재는 2D 농구 게임 시제품이야. 코트에 3점슛 라인을 표시했어. 방 코드는 화면에서 생성되지만, 다른 기기와 실시간으로 함께 플레이하는 서버 연동은 아직 구현되지 않았어.</p></div></div>
+</section></div></div>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);const canvas=$('court'),ctx=canvas.getContext('2d');
+const chars=[{name:'BLAZE',jersey:'#fb6a38',skin:'#d6a17a',hair:'#28222a'},{name:'ICE',jersey:'#4cb8f5',skin:'#f0c6a0',hair:'#47382f'},{name:'VOLT',jersey:'#a3e635',skin:'#8c5a3c',hair:'#151515'},{name:'SHADOW',jersey:'#a78bfa',skin:'#e2b18e',hair:'#171923'},{name:'ROOKIE',jersey:'#facc15',skin:'#b9784c',hair:'#3d2920'}];
+let selected=0,mode='1v1',roomCode='',roomPassword='',created=false,playing=false,quarter=1,quarterMinutes=3,timeLeft=180,score=0,rival=0,charge=0,charging=false,last=0,toastTimer=0,keys={},player={x:0,z:7,jump:0,vz:0,hasBall:true,dribble:false,shield:0},ball={x:0,z:7,y:0,flight:0,fromX:0,fromZ:0,toX:0,toZ:0,kind:'shot'},rivalPlayer={x:1.4,z:3.6,hasBall:false},shotResult='';
+const randCode=()=>{const letters='ABCDEFGHJKLMNPQRSTUVWXYZ';return Array.from({length:3},()=>letters[Math.floor(Math.random()*letters.length)]).join('')};
+function buildChars(){const g=$('characterGrid');g.innerHTML='';chars.forEach((c,i)=>{let el=document.createElement('div');el.className='char'+(i===selected?' selected':'');el.innerHTML=`<div class="avatar" style="--jersey:${c.jersey};--skin:${c.skin}"><span class="head"></span><span class="body"></span><span class="leg l"></span><span class="leg r"></span></div><b>${c.name}</b>`;el.onclick=()=>{selected=i;buildChars();};g.appendChild(el)})}buildChars();
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));$('modeLabel').textContent='/ '+mode.toUpperCase();updateSettings()});
+function updateSettings(){$('settingsText').textContent=`${mode.toUpperCase()} · 4쿼터 · 쿼터당 ${quarterMinutes}분`}
+$('quarterMinutes').onchange=()=>{quarterMinutes=+$('quarterMinutes').value;updateSettings()};
+$('createBtn').onclick=()=>{roomCode=randCode();roomPassword=$('roomPass').value;created=true;$('roomStatus').textContent='ROOM '+roomCode;$('roomMessage').textContent=`방이 생성됐어! 코드: ${roomCode} · 비밀번호 설정 완료`;showToast(`ROOM CODE  ${roomCode}`);updateSettings()};
+$('quickBtn').onclick=()=>{created=true;roomCode='CPU';roomPassword='';$('roomStatus').textContent='PRACTICE MODE';$('roomMessage').textContent='연습 모드가 준비됐어.';startGame()};
+$('joinBtn').onclick=()=>{const code=$('roomCodeInput').value.trim().toUpperCase();if(code.length!==3){$('roomMessage').textContent='방 코드는 알파벳 3글자로 입력해줘.';return}if(!created||code!==roomCode){$('roomMessage').textContent='이 시제품에서는 다른 기기의 방을 찾을 수 없어. 같은 화면에서 생성한 방 코드로만 테스트할 수 있어.';return}if(($('joinPass').value||'')!==roomPassword){$('roomMessage').textContent='비밀번호가 맞지 않아. 다시 확인해줘.';return}$('roomMessage').textContent='방 설정 확인 완료! 캐릭터를 고르고 경기를 시작해.'};
+$('startBtn').onclick=()=>{if(!created){roomCode=randCode();created=true;$('roomStatus').textContent='PRACTICE · '+roomCode;$('roomMessage').textContent='빠른 시작으로 연습 방을 만들었어.'}startGame()};
+function startGame(){playing=true;quarter=1;score=0;rival=0;timeLeft=quarterMinutes*60;player={x:0,z:7,jump:0,vz:0,hasBall:true,dribble:false,shield:0};rivalPlayer={x:1.3,z:3.5,hasBall:false};ball={x:0,z:7,y:0,flight:0,fromX:0,fromZ:0,toX:0,toZ:0,kind:'shot'};charging=false;charge=0;$('startOverlay').classList.add('hidden');$('quarterOverlay').classList.add('hidden');$('endOverlay').classList.add('hidden');$('gameHud').style.display='block';$('gameHud').style.display='block';$('youScore').textContent='0';$('rivalScore').textContent='0';$('qTag').textContent='QUARTER 1';$('powerFill').style.width='0%';$('powerPct').textContent='0%';$('toast').textContent='JUMP BALL!';$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1000);last=performance.now();requestAnimationFrame(loop)}
+$('nextQuarterBtn').onclick=()=>{quarter++;if(quarter>4){endGame();return}timeLeft=quarterMinutes*60;player.x=0;player.z=7;player.jump=0;player.hasBall=true;ball.flight=0;ball.x=0;ball.z=7;$('quarterOverlay').classList.add('hidden');$('qTag').textContent='QUARTER '+quarter;showToast('JUMP BALL!');last=performance.now();requestAnimationFrame(loop)};
+$('restartBtn').onclick=()=>startGame();
+function showToast(text){$('toast').textContent=text;$('toast').classList.add('show');toastTimer=1.7}
+function keyName(e){if(e.code==='Space')return ' ';if(e.key==='Control'||e.key==='ControlLeft'||e.key==='ControlRight')return 'control';return e.key.toLowerCase()}
+window.addEventListener('keydown',e=>{if(!playing)return;let k=keyName(e);if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(k)||e.code==='Space')e.preventDefault();keys[k]=true;if(k===' '&&!e.repeat&&player.jump<=0){player.jump=.95;player.vz=7;showToast('JUMP!')}if(k==='r'&&!e.repeat)shoot();if(k==='f'&&!e.repeat)trySteal();if(k==='p'&&!e.repeat)tryPass()});
+window.addEventListener('keyup',e=>{if(!playing)return;let k=keyName(e);keys[k]=false});window.addEventListener('blur',()=>{keys={};charging=false;charge=0});
+function trySteal(){if(player.hasBall){showToast('YOU HAVE THE BALL');return}let d=Math.hypot(player.x-rivalPlayer.x,player.z-rivalPlayer.z);if(d<2.1&&!player.dribble&&Math.random()>.24){player.hasBall=true;rivalPlayer.hasBall=false;showToast('STEAL! BALL WON')}else showToast(player.dribble?'DRIBBLE SHIELD! STEAL BLOCKED':'GET CLOSER TO STEAL')}
+function tryPass(){if(mode!=='2v2'){showToast('PASS ONLY IN 2 VS 2');return}if(player.hasBall){player.hasBall=false;ball.flight=.55;ball.kind='pass';ball.fromX=player.x;ball.fromZ=player.z;ball.toX=-2.5;ball.toZ=5.2;showToast('PASS TO TEAMMATE!');setTimeout(()=>{if(playing&&ball.kind==='pass'){player.hasBall=true;ball.flight=0;showToast('TEAMMATE RETURN PASS')}} ,650)}else showToast('NO BALL TO PASS')}
+function shoot(){if(!player.hasBall){showToast('GET THE BALL FIRST');return}const power=Math.max(.12,charge/100);const dunk=player.jump>0&&Math.abs(player.x)<2.7&&player.z<4.4;const smash=dunk&&keys.control;const isThree=!dunk&&player.z>=5.5&&Math.abs(player.x)<3.8&&power>.45;player.hasBall=false;ball.flight=0.85;ball.fromX=player.x;ball.fromZ=player.z;ball.toX=0;ball.toZ=0.7;ball.kind=smash?'smash':dunk?'dunk':'shot';const chance=dunk?.9:Math.min(.92,.16+power*.72+(player.z<4?0.15:0));const made=Math.random()<chance;shotResult=made?'made':'miss';showToast(smash?'SMASH DUNK!':dunk?'DUNK ATTEMPT!':`SHOT ${Math.round(power*100)}%`);setTimeout(()=>{if(!playing)return;ball.flight=0;ball.x=player.x;ball.z=player.z;if(made){score+=dunk?2:(isThree?3:2);showToast(dunk?'SLAM DUNK!':isThree?'3 POINTER!':'BUCKET!')}else{showToast('MISSED! REBOUND');player.hasBall=true} $('youScore').textContent=score;player.hasBall=true},900)}
+function endQuarter(){playing=false;charging=false;$('gameHud').style.display='none';if(quarter>=4){endGame();return}$('quarterTitle').textContent='QUARTER '+(quarter+1);$('quarterText').textContent=`현재 점수 ${score} : ${rival}. 다음 쿼터를 시작할 준비가 됐어.`;$('quarterOverlay').classList.remove('hidden')}
+function endGame(){playing=false;$('gameHud').style.display='none';$('quarterOverlay').classList.add('hidden');$('finalText').textContent=`최종 점수 ${score} : ${rival} · ${score>=rival?'승리! 멋진 경기였어.':'다음 경기에서 다시 도전해봐!'}`;$('endOverlay').classList.remove('hidden')}
+function loop(now){if(!playing)return;const dt=Math.min(.04,(now-last)/1000||.016);last=now;timeLeft-=dt;if(timeLeft<=0){timeLeft=0;updateHud();endQuarter();draw();return}update(dt);updateHud();draw();requestAnimationFrame(loop)}
+function update(dt){let dx=0,dz=0;if(keys.w||keys.arrowup)dz-=1;if(keys.s||keys.arrowdown)dz+=1;if(keys.a||keys.arrowleft)dx-=1;if(keys.d||keys.arrowright)dx+=1;let len=Math.hypot(dx,dz)||1;let speed=keys.control?2.0:3.5;player.x=Math.max(-4.6,Math.min(4.6,player.x+dx/len*speed*dt));player.z=Math.max(.7,Math.min(9.3,player.z+dz/len*speed*dt));player.dribble=!!keys.control;player.shield=player.dribble?1:0;if(player.jump>0){player.jump-=dt; if(player.jump<0)player.jump=0}if(charging)charge=Math.min(100,charge+dt*62);if(ball.flight>0){ball.flight=Math.max(0,ball.flight-dt);let t=1-ball.flight/.85;ball.x=ball.fromX+(ball.toX-ball.fromX)*t;ball.z=ball.fromZ+(ball.toZ-ball.fromZ)*t;ball.y=Math.sin(t*Math.PI)*2.6;if(ball.flight===0&&ball.kind==='pass')player.hasBall=true}else if(player.hasBall){ball.x=player.x+.35;ball.z=player.z-.12;ball.y=.45+(player.dribble?Math.abs(Math.sin(now/100))*0.4:0)}if(Math.random()<dt*.09&&rivalPlayer.hasBall){rival=Math.max(rival,0)}if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').classList.remove('show')}}
+function updateHud(){let s=Math.ceil(timeLeft);$('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');$('youScore').textContent=score;$('rivalScore').textContent=rival;$('powerFill').style.width=charge+'%';$('powerPct').textContent=Math.round(charge)+'%';$('qTag').textContent='QUARTER '+quarter;document.querySelectorAll('.key').forEach(el=>{let k=el.dataset.key;el.classList.toggle('active',!!keys[k]||(k==='r'&&charging))})}
+function project(x,z){let d=.55+z/13;return {x:canvas.width/2+x*74*d,y:90+z*43,scale:d}}
+function draw(){const w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);let bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#111e32');bg.addColorStop(1,'#07101a');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+// arena walls and lights
+ctx.fillStyle='#152944';ctx.beginPath();ctx.moveTo(100,95);ctx.lineTo(900,95);ctx.lineTo(1000,240);ctx.lineTo(0,240);ctx.closePath();ctx.fill();for(let i=0;i<10;i++){ctx.fillStyle=i%2?'#314866':'#253b59';ctx.fillRect(110+i*80,112,52,36)}
+// court trapezoid
+ctx.beginPath();ctx.moveTo(275,210);ctx.lineTo(725,210);ctx.lineTo(940,595);ctx.lineTo(60,595);ctx.closePath();let floor=ctx.createLinearGradient(0,210,0,595);floor.addColorStop(0,'#d98c4d');floor.addColorStop(1,'#a9552d');ctx.fillStyle=floor;ctx.fill();ctx.save();ctx.beginPath();ctx.moveTo(275,210);ctx.lineTo(725,210);ctx.lineTo(940,595);ctx.lineTo(60,595);ctx.closePath();ctx.clip();ctx.strokeStyle='rgba(86,37,18,.24)';ctx.lineWidth=1;for(let i=1;i<12;i++){const t=i/12;ctx.beginPath();ctx.moveTo(275+t*450,210);ctx.lineTo(60+t*880,595);ctx.stroke()}for(let i=1;i<10;i++){const y=210+i*38.5,t=(y-210)/385;ctx.beginPath();ctx.moveTo(275-215*t,y);ctx.lineTo(725+215*t,y);ctx.stroke()}ctx.fillStyle='rgba(255,232,190,.08)';ctx.fillRect(445,210,110,385);ctx.restore();ctx.strokeStyle='#ffe0a9';ctx.lineWidth=3;ctx.stroke();
+ctx.lineWidth=2;ctx.strokeStyle='#f6c58a';ctx.beginPath();ctx.moveTo(500,210);ctx.lineTo(500,595);ctx.stroke();ctx.beginPath();ctx.ellipse(500,398,82,48,0,0,Math.PI*2);ctx.stroke();
+// Key / paint and clearly highlighted 3-point arc
+ctx.strokeStyle='#f6c58a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(410,210);ctx.lineTo(410,350);ctx.quadraticCurveTo(500,400,590,350);ctx.lineTo(590,210);ctx.stroke();
+ctx.save();ctx.strokeStyle='#fff4c2';ctx.lineWidth=4;ctx.setLineDash([10,6]);ctx.beginPath();ctx.moveTo(350,210);ctx.lineTo(350,285);ctx.quadraticCurveTo(500,440,650,285);ctx.lineTo(650,210);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#fff4c2';ctx.font='bold 15px sans-serif';ctx.textAlign='center';ctx.fillText('3-POINT LINE',500,458);ctx.restore();
+// hoop
+ctx.strokeStyle='#f7f7fb';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(450,174);ctx.lineTo(550,174);ctx.stroke();ctx.fillStyle='#f97316';ctx.fillRect(462,174,76,5);ctx.strokeStyle='#fb923c';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(500,188,23,8,0,0,Math.PI*2);ctx.stroke();ctx.strokeStyle='#f3d7c2';ctx.lineWidth=1.5;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(500+i*7,190);ctx.lineTo(500+i*5,208);ctx.stroke()}ctx.beginPath();ctx.moveTo(481,199);ctx.lineTo(519,199);ctx.stroke();
+// ambient shadows and players
+function drawPlayer(x,z,color,skin,hair,hasBall,isUser){const p=project(x,z);const jumpProgress=player.jump>0?1-player.jump/.95:1;const lift=isUser&&player.jump>0?Math.sin(Math.max(0,Math.min(1,jumpProgress))*Math.PI)*92:0;const moving=isUser&&(keys.w||keys.a||keys.s||keys.d||keys.arrowup||keys.arrowdown||keys.arrowleft||keys.arrowright);const swing=moving?Math.sin(performance.now()/95)*5:0;ctx.save();ctx.globalAlpha=.28;ctx.fillStyle='#02050a';ctx.beginPath();ctx.ellipse(p.x,p.y+3,22*p.scale,8*p.scale,0,0,Math.PI*2);ctx.fill();ctx.restore();ctx.save();ctx.translate(p.x,p.y-lift);ctx.scale(p.scale,p.scale);ctx.lineCap='round';ctx.lineJoin='round';const airborne=isUser&&player.jump>0;ctx.strokeStyle='#17202c';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-6,-8);ctx.lineTo(-9+swing*.25,7);ctx.lineTo(-12+swing*.25,15);ctx.moveTo(6,-8);ctx.lineTo(9-swing*.25,7);ctx.lineTo(12-swing*.25,15);ctx.stroke();ctx.fillStyle='#f1f5f9';ctx.fillRect(-15,10,9,5);ctx.fillRect(7,10,9,5);ctx.fillStyle='#e2e8f0';ctx.fillRect(-14,5,7,6);ctx.fillRect(7,5,7,6);ctx.strokeStyle=skin;ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-12,-30);ctx.lineTo(-21,airborne?-50:-17+swing);ctx.moveTo(12,-30);ctx.lineTo(21,airborne?-50:-17-swing);ctx.stroke();ctx.fillStyle=skin;ctx.beginPath();ctx.arc(-21,airborne?-50:-17+swing,4,0,Math.PI*2);ctx.arc(21,airborne?-50:-17-swing,4,0,Math.PI*2);ctx.fill();ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(-12,-35);ctx.quadraticCurveTo(0,-39,12,-35);ctx.lineTo(16,-11);ctx.quadraticCurveTo(0,-5,-16,-11);ctx.closePath();ctx.fill();ctx.strokeStyle='#f8fafc';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#111827';ctx.beginPath();ctx.moveTo(-15,-12);ctx.lineTo(15,-12);ctx.lineTo(14,1);ctx.quadraticCurveTo(0,5,-14,1);ctx.closePath();ctx.fill();ctx.fillStyle='#f8fafc';ctx.fillRect(-12,-10,24,2);ctx.font='900 9px sans-serif';ctx.textAlign='center';ctx.fillText(isUser?'07':'11',0,-19);ctx.fillStyle=skin;ctx.beginPath();ctx.arc(0,-46,10.5,0,Math.PI*2);ctx.fill();ctx.fillStyle=hair;ctx.beginPath();ctx.moveTo(-10,-45);ctx.quadraticCurveTo(-13,-58,-2,-58);ctx.quadraticCurveTo(8,-61,11,-49);ctx.lineTo(8,-48);ctx.quadraticCurveTo(0,-52,-10,-45);ctx.fill();ctx.fillStyle='#17202c';ctx.beginPath();ctx.arc(-3,-46,1.1,0,Math.PI*2);ctx.arc(4,-46,1.1,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#7b3f32';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-2,-41);ctx.quadraticCurveTo(1,-39,4,-41);ctx.stroke();if(isUser&&player.dribble){ctx.strokeStyle='#a3e635';ctx.lineWidth=2.5;ctx.beginPath();ctx.ellipse(0,-23,25,34,0,0,Math.PI*2);ctx.stroke()}ctx.restore();if(hasBall){const bx=p.x+17*p.scale,by=p.y-12*p.scale-lift+(player.dribble?Math.abs(Math.sin(performance.now()/100))*7:0);ctx.fillStyle='#f97316';ctx.beginPath();ctx.arc(bx,by,9.5*p.scale,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#54230d';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(bx,by,9.5*p.scale,-1.3,1.3);ctx.moveTo(bx-8*p.scale,by);ctx.lineTo(bx+8*p.scale,by);ctx.stroke()}}
+// draw player far first, then user
+let rp=project(rivalPlayer.x,rivalPlayer.z),pp=project(player.x,player.z);if(rp.y<pp.y){drawPlayer(rivalPlayer.x,rivalPlayer.z,'#4f8fe8','#c58f69','#29211c',rivalPlayer.hasBall,false);drawPlayer(player.x,player.z,chars[selected].jersey,chars[selected].skin,chars[selected].hair,player.hasBall,true)}else{drawPlayer(player.x,player.z,chars[selected].jersey,chars[selected].skin,chars[selected].hair,player.hasBall,true);drawPlayer(rivalPlayer.x,rivalPlayer.z,'#4f8fe8','#c58f69','#29211c',rivalPlayer.hasBall,false)}
+if(ball.flight>0){const bp=project(ball.x,ball.z);ctx.fillStyle='#f97316';ctx.beginPath();ctx.arc(bp.x,bp.y-ball.y*50,10,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#54230d';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(bp.x,bp.y-ball.y*50,10,-1.4,1.4);ctx.moveTo(bp.x-9,bp.y-ball.y*50);ctx.lineTo(bp.x+9,bp.y-ball.y*50);ctx.stroke()}
+// decorative court lights
+ctx.fillStyle='#fb923c';ctx.globalAlpha=.15;ctx.beginPath();ctx.ellipse(500,330,250,90,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+if(!playing){ctx.fillStyle='#e6edf8';ctx.font='bold 12px sans-serif';ctx.textAlign='left';ctx.fillText('COURT CLASH  /  3D COURT PREVIEW',22,32)}}
+/* Updated game viewport, perspective, character rig, and shot tuning. */
+function startGame(){playing=true;$('appRoot').classList.add('game-active');quarter=1;score=0;rival=0;timeLeft=quarterMinutes*60;player={x:0,z:7,jump:0,vz:0,hasBall:true,dribble:false,shield:0};rivalPlayer={x:1.3,z:3.5,hasBall:false};ball={x:0,z:7,y:0,flight:0,fromX:0,fromZ:0,toX:0,toZ:0,kind:'shot',power:.4};charging=false;charge=0;$('startOverlay').classList.add('hidden');$('quarterOverlay').classList.add('hidden');$('endOverlay').classList.add('hidden');$('gameHud').style.display='block';$('youScore').textContent='0';$('rivalScore').textContent='0';$('qTag').textContent='QUARTER 1';$('powerFill').style.width='0%';$('powerPct').textContent='0%';$('toast').textContent='JUMP BALL!';$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1000);last=performance.now();requestAnimationFrame(loop)}
+function project(x,z){const d=.6+z*.055;return {x:500+x*84*d,y:210+z*38.5,scale:d}}
+function drawPlayer(x,z,color,skin,hair,hasBall,isUser){const p=project(x,z);const jumpProgress=player.jump>0?1-player.jump/.95:1;const lift=isUser&&player.jump>0?Math.sin(Math.max(0,Math.min(1,jumpProgress))*Math.PI)*92:0;const moving=isUser&&(keys.w||keys.a||keys.s||keys.d||keys.arrowup||keys.arrowdown||keys.arrowleft||keys.arrowright);const swing=moving?Math.sin(performance.now()/95)*5:0;ctx.save();ctx.globalAlpha=.28;ctx.fillStyle='#02050a';ctx.beginPath();ctx.ellipse(p.x,p.y+3,22*p.scale,8*p.scale,0,0,Math.PI*2);ctx.fill();ctx.restore();ctx.save();ctx.translate(p.x,p.y-lift);ctx.scale(p.scale,p.scale);ctx.lineCap='round';ctx.lineJoin='round';const airborne=isUser&&player.jump>0;ctx.strokeStyle='#17202c';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-6,-8);ctx.lineTo(-9+swing*.25,7);ctx.lineTo(-12+swing*.25,15);ctx.moveTo(6,-8);ctx.lineTo(9-swing*.25,7);ctx.lineTo(12-swing*.25,15);ctx.stroke();ctx.fillStyle='#f1f5f9';ctx.fillRect(-15,10,9,5);ctx.fillRect(7,10,9,5);ctx.fillStyle='#e2e8f0';ctx.fillRect(-14,5,7,6);ctx.fillRect(7,5,7,6);ctx.strokeStyle=skin;ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-12,-30);ctx.lineTo(-21,airborne?-50:-17+swing);ctx.moveTo(12,-30);ctx.lineTo(21,airborne?-50:-17-swing);ctx.stroke();ctx.fillStyle=skin;ctx.beginPath();ctx.arc(-21,airborne?-50:-17+swing,4,0,Math.PI*2);ctx.arc(21,airborne?-50:-17-swing,4,0,Math.PI*2);ctx.fill();ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(-12,-35);ctx.quadraticCurveTo(0,-39,12,-35);ctx.lineTo(16,-11);ctx.quadraticCurveTo(0,-5,-16,-11);ctx.closePath();ctx.fill();ctx.strokeStyle='#f8fafc';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#111827';ctx.beginPath();ctx.moveTo(-15,-12);ctx.lineTo(15,-12);ctx.lineTo(14,1);ctx.quadraticCurveTo(0,5,-14,1);ctx.closePath();ctx.fill();ctx.fillStyle='#f8fafc';ctx.fillRect(-12,-10,24,2);ctx.font='900 9px sans-serif';ctx.textAlign='center';ctx.fillText(isUser?'07':'11',0,-19);ctx.fillStyle=skin;ctx.beginPath();ctx.arc(0,-46,10.5,0,Math.PI*2);ctx.fill();ctx.fillStyle=hair;ctx.beginPath();ctx.moveTo(-10,-45);ctx.quadraticCurveTo(-13,-58,-2,-58);ctx.quadraticCurveTo(8,-61,11,-49);ctx.lineTo(8,-48);ctx.quadraticCurveTo(0,-52,-10,-45);ctx.fill();ctx.fillStyle='#17202c';ctx.beginPath();ctx.arc(-3,-46,1.1,0,Math.PI*2);ctx.arc(4,-46,1.1,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#7b3f32';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-2,-41);ctx.quadraticCurveTo(1,-39,4,-41);ctx.stroke();if(isUser&&player.dribble){ctx.strokeStyle='#a3e635';ctx.lineWidth=2.5;ctx.beginPath();ctx.ellipse(0,-23,25,34,0,0,Math.PI*2);ctx.stroke()}ctx.restore();if(hasBall){const bx=p.x+17*p.scale,by=p.y-12*p.scale-lift+(player.dribble?Math.abs(Math.sin(performance.now()/100))*7:0);ctx.fillStyle='#f97316';ctx.beginPath();ctx.arc(bx,by,9.5*p.scale,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#54230d';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(bx,by,9.5*p.scale,-1.3,1.3);ctx.moveTo(bx-8*p.scale,by);ctx.lineTo(bx+8*p.scale,by);ctx.stroke()}}
+function update(dt){let dx=0,dz=0;if(keys.w||keys.arrowup)dz-=1;if(keys.s||keys.arrowdown)dz+=1;if(keys.a||keys.arrowleft)dx-=1;if(keys.d||keys.arrowright)dx+=1;let len=Math.hypot(dx,dz)||1;let speed=keys.control?2:3.5;player.x=Math.max(-4.6,Math.min(4.6,player.x+dx/len*speed*dt));player.z=Math.max(.7,Math.min(9.3,player.z+dz/len*speed*dt));player.dribble=!!keys.control;player.shield=player.dribble?1:0;if(player.jump>0){player.jump-=dt;if(player.jump<0)player.jump=0}if(charging)charge=Math.min(100,charge+dt*48);if(ball.flight>0){ball.flight=Math.max(0,ball.flight-dt);let t=1-ball.flight/.85;ball.x=ball.fromX+(ball.toX-ball.fromX)*t;ball.z=ball.fromZ+(ball.toZ-ball.fromZ)*t;ball.y=Math.sin(t*Math.PI)*(1+(ball.power||.4)*2.2);if(ball.flight===0&&ball.kind==='pass')player.hasBall=true}else if(player.hasBall){ball.x=player.x+.35;ball.z=player.z-.12;ball.y=.45+(player.dribble?Math.abs(Math.sin(performance.now()/100))*.4:0)}if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').classList.remove('show')}}
+function shoot(){if(!player.hasBall){showToast('GET THE BALL FIRST');return}const raw=charge/100,power=.28+raw*.72;const dunk=player.jump>0&&Math.abs(player.x)<2.7&&player.z<4.4;const smash=dunk&&keys.control;const isThree=!dunk&&player.z>=5.5&&Math.abs(player.x)<3.8&&power>.45;const timing=1-Math.min(1,Math.abs(raw-.72)/.72);player.hasBall=false;ball.flight=.85;ball.power=power;ball.fromX=player.x;ball.fromZ=player.z;ball.toX=0;ball.toZ=.2;ball.kind=smash?'smash':dunk?'dunk':'shot';const chance=dunk?.94:Math.max(.08,Math.min(.91,.12+timing*.65+(player.z<4?.1:0)-(isThree?.08:0)));const made=Math.random()<chance;shotResult=made?'made':'miss';showToast(smash?'SMASH DUNK!':dunk?'DUNK ATTEMPT!':`SHOT POWER ${Math.round(power*100)}%`);setTimeout(()=>{if(!playing)return;ball.flight=0;ball.x=player.x;ball.z=player.z;if(made){score+=dunk?2:(isThree?3:2);showToast(dunk?'SLAM DUNK!':isThree?'3 POINTER!':'BUCKET!')}else showToast('MISSED! REBOUND');$('youScore').textContent=score;player.hasBall=true},900)}
+const exitButton=document.createElement('button');exitButton.id='exitGameBtn';exitButton.className='secondary';exitButton.textContent='← 로비로';exitButton.onclick=()=>{playing=false;charging=false;keys={};$('appRoot').classList.remove('game-active');$('gameHud').style.display='none';$('quarterOverlay').classList.add('hidden');$('endOverlay').classList.add('hidden');$('startOverlay').classList.remove('hidden');draw()};$('appRoot').appendChild(exitButton);
+window.addEventListener('keydown',e=>{if(e.code==='Space'&&!e.repeat&&playing){player.jump=.95;player.vz=7}});
+$('nextQuarterBtn').onclick=()=>{quarter++;if(quarter>4){endGame();return}timeLeft=quarterMinutes*60;player.x=0;player.z=7;player.jump=0;player.hasBall=true;ball.flight=0;ball.x=0;ball.z=7;$('quarterOverlay').classList.add('hidden');$('gameHud').style.display='block';$('qTag').textContent='QUARTER '+quarter;showToast('JUMP BALL!');last=performance.now();requestAnimationFrame(loop)};
+// Rebuilt flat 2D gameplay, instant shooting, and position-based shot guidance.
+let aimX=0,aimY=0,shotQuality=0;
+const bestSpots=[{x:0,z:1.5,label:'RIM'},{x:0,z:3.8,label:'MID'},{x:0,z:6.4,label:'3PT'},{x:-2.65,z:6.15,label:'3PT'},{x:2.65,z:6.15,label:'3PT'}];
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+function calcShotQuality(){let nearest=Infinity;for(const spot of bestSpots){const d=Math.hypot(player.x-spot.x,(player.z-spot.z)*.9);nearest=Math.min(nearest,d)}return Math.round(clamp(100-nearest*20,12,100))}
+function setAimReadout(){const q=calcShotQuality();shotQuality=q;const zone=q>=84?'OPTIMAL SPOT':q>=65?'GOOD RANGE':'MOVE TO GREEN ZONE';$('aimReadout').textContent=`AIM  ${aimX>0?'+':''}${aimX.toFixed(2)} / ${aimY>0?'+':''}${aimY.toFixed(2)}   ·   ${zone} ${q}%`}
+function startGame(){playing=true;$('appRoot').classList.add('game-active');quarter=1;score=0;rival=0;timeLeft=quarterMinutes*60;player={x:0,z:6.8,jump:0,vz:0,hasBall:true,dribble:false,shield:0};rivalPlayer={x:1.3,z:3.5,hasBall:false};ball={x:0,z:6.8,y:0,flight:0,fromX:0,fromZ:0,toX:0,toZ:0,kind:'shot',power:.4};keys={};charging=false;charge=0;aimX=0;aimY=0;$('startOverlay').classList.add('hidden');$('quarterOverlay').classList.add('hidden');$('endOverlay').classList.add('hidden');$('gameHud').style.display='block';$('youScore').textContent='0';$('rivalScore').textContent='0';$('qTag').textContent='QUARTER 1';$('powerFill').style.width='0%';$('powerPct').textContent='0%';$('toast').textContent='TIP OFF · AIM WITH ARROWS';$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1100);setAimReadout();last=performance.now();draw();requestAnimationFrame(loop)}
+function project(x,z){return {x:500+x*80,y:75+z*49,scale:1}}
+function update(dt){let dx=0,dz=0;if(keys.w)dz-=1;if(keys.s)dz+=1;if(keys.a)dx-=1;if(keys.d)dx+=1;const len=Math.hypot(dx,dz)||1;const speed=keys.control?2.25:3.7;player.x=clamp(player.x+dx/len*speed*dt,-4.6,4.6);player.z=clamp(player.z+dz/len*speed*dt,.7,9.3);player.dribble=!!keys.control;player.shield=player.dribble?1:0;if(player.jump>0)player.jump=Math.max(0,player.jump-dt);if(ball.flight>0){ball.flight=Math.max(0,ball.flight-dt);const t=1-ball.flight/.78;ball.x=ball.fromX+(ball.toX-ball.fromX)*t;ball.z=ball.fromZ+(ball.toZ-ball.fromZ)*t;ball.y=Math.sin(t*Math.PI)*(1.25+Math.abs(aimY)*.25)}else if(player.hasBall){ball.x=player.x+.28;ball.z=player.z+.08;ball.y=Math.abs(Math.sin(performance.now()/115))*.65}shotQuality=calcShotQuality();if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').classList.remove('show')}}
+function updateHud(){const s=Math.ceil(timeLeft);$('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');$('youScore').textContent=score;$('rivalScore').textContent=rival;$('powerFill').style.width=shotQuality+'%';$('powerPct').textContent=shotQuality+'%';$('qTag').textContent='QUARTER '+quarter;setAimReadout();document.querySelectorAll('.key').forEach(el=>{const k=el.dataset.key;const active=k==='aim'?['arrowleft','arrowright','arrowup','arrowdown'].some(a=>keys[a]):!!keys[k];el.classList.toggle('active',active)})}
+function shoot(){if(!player.hasBall){showToast('GET THE BALL FIRST');return}const quality=calcShotQuality(),isThree=player.z>=5.7&&Math.abs(player.x)<4.2,dunk=player.jump>0&&player.z<2.5&&Math.abs(player.x)<1.5;const aimError=Math.hypot(aimX,aimY);let chance=.2+quality/100*.53;if(isThree)chance-=.10;if(dunk)chance=.84;chance=clamp(chance*Math.max(.04,1-aimError*1.55),.04,.84);const made=Math.random()<chance;player.hasBall=false;ball.flight=.78;ball.fromX=player.x+.18;ball.fromZ=player.z;ball.toX=aimX;ball.toZ=.22+aimY*.18;ball.kind=dunk?'dunk':'shot';ball.power=1.1;showToast(dunk?'DUNK ATTEMPT!':`SHOT · ${Math.round(chance*100)}% CHANCE`);setTimeout(()=>{if(!playing)return;ball.flight=0;ball.x=player.x;ball.z=player.z;if(made){score+=dunk?2:(isThree?3:2);showToast(dunk?'SLAM DUNK!':isThree?'3 POINTER!':'BUCKET!')}else{showToast('MISSED · ADJUST AIM / POSITION')}$('youScore').textContent=score;player.hasBall=true},820)}
+function drawPlayer(x,z,color,skin,hair,hasBall,isUser){const p=project(x,z),t=performance.now(),moving=isUser&&(keys.w||keys.a||keys.s||keys.d),dribbling=hasBall&&isUser&&(player.dribble||moving),phase=t/105,step=moving?Math.sin(t/75)*5:Math.sin(t/330)*1.5,bounce=dribbling?Math.abs(Math.sin(phase))*23:0,lift=isUser&&player.jump>0?Math.sin((1-player.jump/.95)*Math.PI)*22:0;ctx.save();ctx.globalAlpha=.28;ctx.fillStyle='#01060b';ctx.beginPath();ctx.ellipse(p.x,p.y+9,23,10,0,0,Math.PI*2);ctx.fill();ctx.restore();ctx.save();ctx.translate(p.x,p.y-lift);ctx.lineCap='round';ctx.lineJoin='round';ctx.fillStyle='#111827';ctx.beginPath();ctx.ellipse(-8,16+step,6,11,-.18,0,Math.PI*2);ctx.ellipse(8,16-step,6,11,.18,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f4f7fb';ctx.beginPath();ctx.ellipse(-8,24+step,7,4,0,0,Math.PI*2);ctx.ellipse(8,24-step,7,4,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle=skin;ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-13,-3);ctx.lineTo(dribbling?-23:-24,dribbling?5+bounce*.45:-9+step);ctx.moveTo(13,-3);ctx.lineTo(dribbling?23:24,dribbling?7+bounce*.38:-8-step);ctx.stroke();ctx.fillStyle=skin;ctx.beginPath();ctx.arc(dribbling?-23:-24,dribbling?5+bounce*.45:-9+step,4.5,0,Math.PI*2);ctx.arc(dribbling?23:24,dribbling?7+bounce*.38:-8-step,4.5,0,Math.PI*2);ctx.fill();ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(-14,-10);ctx.quadraticCurveTo(-17,-2,-14,11);ctx.quadraticCurveTo(0,17,14,11);ctx.quadraticCurveTo(17,-2,14,-10);ctx.quadraticCurveTo(0,-15,-14,-10);ctx.fill();ctx.strokeStyle='#f7fbff';ctx.lineWidth=2;ctx.stroke();ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(-8,-9);ctx.lineTo(-8,10);ctx.moveTo(8,-9);ctx.lineTo(8,10);ctx.stroke();ctx.fillStyle='#fff';ctx.font='900 10px sans-serif';ctx.textAlign='center';ctx.fillText(isUser?'07':'11',0,5);ctx.fillStyle=skin;ctx.beginPath();ctx.arc(0,-20,11,0,Math.PI*2);ctx.fill();ctx.fillStyle=hair;ctx.beginPath();ctx.arc(0,-23,11,Math.PI,Math.PI*2);ctx.quadraticCurveTo(11,-20,7,-16);ctx.lineTo(3,-20);ctx.lineTo(-5,-16);ctx.quadraticCurveTo(-12,-20,-10,-24);ctx.fill();ctx.fillStyle='#17202c';ctx.beginPath();ctx.arc(-3,-20,1.2,0,Math.PI*2);ctx.arc(4,-20,1.2,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#7b3f32';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-2,-15);ctx.quadraticCurveTo(1,-13,4,-15);ctx.stroke();if(isUser&&player.dribble){ctx.strokeStyle='#bef264';ctx.lineWidth=2;ctx.setLineDash([4,4]);ctx.beginPath();ctx.ellipse(0,1,31,34,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([])}ctx.restore();if(hasBall){const bx=p.x+(dribbling?(Math.sin(phase)>0?27:-27):25),by=p.y+(dribbling?2+bounce:0);ctx.fillStyle='#fb762b';ctx.beginPath();ctx.arc(bx,by,10,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#52220f';ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(bx,by,9,-1.25,1.25);ctx.moveTo(bx-8,by);ctx.lineTo(bx+8,by);ctx.moveTo(bx-5,by-7);ctx.lineTo(bx+5,by+7);ctx.stroke()}}
+function draw(){const w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#0d1927');bg.addColorStop(1,'#07101b');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);ctx.fillStyle='#111d2c';ctx.fillRect(22,20,956,575);const x0=55,y0=34,cw=890,ch=547;ctx.fillStyle='#a75f36';ctx.fillRect(x0,y0,cw,ch);for(let i=0;i<18;i++){ctx.fillStyle=i%2?'rgba(255,205,142,.06)':'rgba(65,26,10,.055)';ctx.fillRect(x0,y0+i*ch/18,cw,ch/18)}ctx.strokeStyle='#f6d4a2';ctx.lineWidth=3;ctx.strokeRect(x0,y0,cw,ch);ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x0,310);ctx.lineTo(x0+cw,310);ctx.stroke();ctx.beginPath();ctx.arc(500,310,65,0,Math.PI*2);ctx.stroke();ctx.fillStyle='rgba(255,221,172,.08)';ctx.fillRect(390,35,220,190);ctx.fillRect(390,390,220,190);ctx.strokeRect(390,35,220,190);ctx.strokeRect(390,390,220,190);ctx.beginPath();ctx.arc(500,225,64,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(500,390,64,0,Math.PI*2);ctx.stroke();ctx.setLineDash([7,5]);ctx.beginPath();ctx.moveTo(310,35);ctx.lineTo(310,86);ctx.quadraticCurveTo(500,285,690,86);ctx.lineTo(690,35);ctx.stroke();ctx.beginPath();ctx.moveTo(310,581);ctx.lineTo(310,530);ctx.quadraticCurveTo(500,331,690,530);ctx.lineTo(690,581);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#fff0cf';ctx.font='900 12px sans-serif';ctx.textAlign='center';ctx.fillText('3 POINT',500,284);ctx.save();ctx.strokeStyle='#8cf0ad';ctx.fillStyle='rgba(100,230,140,.08)';ctx.lineWidth=2;for(const spot of bestSpots){const p=project(spot.x,spot.z);ctx.beginPath();ctx.ellipse(p.x,p.y,27,19,0,0,Math.PI*2);ctx.fill();ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#b9f6cb';ctx.font='900 9px sans-serif';ctx.fillText('BEST',p.x,p.y+3);ctx.fillStyle='rgba(100,230,140,.08)'}ctx.restore();function hoop(y,dir){ctx.strokeStyle='#e7edf5';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(458,y-18*dir);ctx.lineTo(542,y-18*dir);ctx.stroke();ctx.strokeStyle='#fb923c';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(500,y,19,7,0,0,Math.PI*2);ctx.stroke();ctx.strokeStyle='#f8d9bf';ctx.lineWidth=1;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(500+i*6,y+3*dir);ctx.lineTo(500+i*4,y+16*dir);ctx.stroke()}}hoop(76,1);hoop(559,-1);const rp=project(rivalPlayer.x,rivalPlayer.z),pp=project(player.x,player.z);if(rp.y<pp.y){drawPlayer(rivalPlayer.x,rivalPlayer.z,'#4f8fe8','#c58f69','#29211c',rivalPlayer.hasBall,false);drawPlayer(player.x,player.z,chars[selected].jersey,chars[selected].skin,chars[selected].hair,player.hasBall,true)}else{drawPlayer(player.x,player.z,chars[selected].jersey,chars[selected].skin,chars[selected].hair,player.hasBall,true);drawPlayer(rivalPlayer.x,rivalPlayer.z,'#4f8fe8','#c58f69','#29211c',rivalPlayer.hasBall,false)}if(playing&&player.hasBall){ctx.save();ctx.strokeStyle='rgba(255,255,255,.45)';ctx.lineWidth=2;ctx.setLineDash([5,7]);ctx.beginPath();ctx.moveTo(pp.x,pp.y-8);ctx.lineTo(500+aimX*64,76+aimY*18);ctx.stroke();ctx.setLineDash([]);ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(500+aimX*64,76+aimY*18,11,0,Math.PI*2);ctx.moveTo(500+aimX*64-17,76+aimY*18);ctx.lineTo(500+aimX*64+17,76+aimY*18);ctx.moveTo(500+aimX*64,76+aimY*18-17);ctx.lineTo(500+aimX*64,76+aimY*18+17);ctx.stroke();ctx.restore()}if(ball.flight>0){const bp=project(ball.x,ball.z),by=bp.y-ball.y*38;ctx.fillStyle='#fb762b';ctx.beginPath();ctx.arc(bp.x,by,10,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#52220f';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(bp.x,by,9,-1.3,1.3);ctx.moveTo(bp.x-8,by);ctx.lineTo(bp.x+8,by);ctx.stroke()}ctx.fillStyle='rgba(255,255,255,.68)';ctx.font='900 11px sans-serif';ctx.textAlign='left';ctx.fillText('COURT CLASH  /  FLAT 2D',x0+12,y0+18)}
+/* COHERENT GAMEPLAY CORE: position-based release meter + flat overhead court */
+canvas.width=1600;canvas.height=900;
+const gaugeTrack=$('powerFill').parentElement;
+let aimReadout=$('aimReadout');if(!aimReadout){aimReadout=document.createElement('div');aimReadout.id='aimReadout';$('gameHud').appendChild(aimReadout)}
+let chargeStartedAt=0;
+let dunkAnim=0,dunkFlash=0,freeThrowMode=false,freeThrowTarget=.5,rivalStealTimer=4.8;
+let freeThrowInfo=document.createElement("div");freeThrowInfo.id="freeThrowInfo";freeThrowInfo.className="free-throw-info hidden";freeThrowInfo.innerHTML=`<div class="ft-kicker">PERSONAL FOUL</div><div class="ft-title">FREE THROW</div><p>R을 누르고 있다가 흰색 목표선에 맞춰 놓아.<br>정확히 맞추면 1점이 보장돼.</p>`;document.querySelector(".arena").appendChild(freeThrowInfo);
+let bestMark=gaugeTrack.querySelector('.bestmark');
+if(!bestMark){bestMark=document.createElement('i');bestMark.className='bestmark';gaugeTrack.appendChild(bestMark)}
+bestMark.setAttribute('aria-hidden','true');
+const powerLabel=document.querySelector('.powerlabel span:first-child');
+const powerValue=document.querySelector('.powerlabel span:last-child');
+if(powerLabel)powerLabel.textContent='슛 파워 · 흰색 표시선에서 R 놓기';
+$('powerPct').textContent='추천량 계산 중';
+$('keyGrid').innerHTML='<div class="key" data-key="w"><b>W A S D</b>이동</div><div class="key" data-key="aim"><b>← ↑ ↓ →</b>조준</div><div class="key" data-key=" " ><b>SPACE</b>점프</div><div class="key" data-key="r"><b>R 누르기/놓기</b>슛</div><div class="key" data-key="l"><b>L</b>드리블 기술</div><div class="key" data-key="f"><b>F</b>스틸</div><div class="key" data-key="p"><b>P</b>패스</div><div class="key" data-key="dunk"><b>SPACE + R</b>골대 근처 덩크</div>';
+document.querySelector('.instructions').innerHTML='<b>조작 방법</b><br>• <b>W A S D</b>: 이동<br>• <b>R 길게 누르기 → 흰색 표시선에서 놓기</b>: 슛<br>• 흰색 표시선은 현재 위치에 맞춰 자동 이동해. 가까운 곳은 짧게, 먼 곳은 길게 충전해.<br>• <b>방향키</b>: 조준 · <b>SPACE</b>: 점프<br>• <b>L</b>: 화려한 드리블 · <b>SPACE + R</b>: 골대 근처 덩크<br>• <b>F</b>: 스틸 · <b>P</b>: 팀 패스<br>• 상대가 무리하게 손을 뻗으면 파울과 자유투가 발생해.';
+const tags=document.querySelectorAll('.tag');if(tags[2])tags[2].textContent='RELEASE TIMING';
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+function idealPower(){const distance=Math.hypot(player.x*.78,Math.max(0,player.z-.22));return clamp(.14+distance*.095,.22,.96)}
+function setAimReadout(){const ideal=Math.round(idealPower()*100);const aim=Math.round(Math.hypot(aimX,aimY)*100);$('aimReadout').textContent=`현재 위치 · 권장 충전 ${ideal}%  |  조준 오차 ${aim}%  |  R을 흰색 선에서 놓기`}
+function project(x,z){return {x:500+x*86,y:82+z*51,scale:1}}
+function startGame(){
+  playing=true;$('appRoot').classList.add('game-active');quarter=1;score=0;rival=0;timeLeft=quarterMinutes*60;
+  player={x:0,z:6.8,jump:0,vz:0,hasBall:true,dribble:false,shield:0};
+  rivalPlayer={x:1.3,z:3.5,hasBall:false};ball={x:0,z:6.8,y:0,flight:0,fromX:0,fromZ:0,toX:0,toZ:0,kind:'shot',power:.4};
+  keys={};charging=false;charge=0;aimX=0;aimY=0;dunkAnim=0;dunkFlash=0;freeThrowMode=false;freeThrowTarget=.5;rivalStealTimer=4.8;
+  freeThrowInfo.classList.add('hidden');bestMark.removeAttribute('data-free-throw');
+  const pl=document.querySelector('.powerlabel span:first-child');if(pl)pl.textContent='슛 파워 · 흰색 표시선에서 R 놓기';
+  $('startOverlay').classList.add('hidden');$('quarterOverlay').classList.add('hidden');$('endOverlay').classList.add('hidden');$('gameHud').style.display='block';
+  $('youScore').textContent='0';$('rivalScore').textContent='0';$('qTag').textContent='QUARTER 1';$('powerFill').style.width='0%';$('powerPct').textContent='0%';
+  $('toast').textContent='TIP OFF · L 드리블 · SPACE + R 덩크';$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1700);
+  setAimReadout();last=performance.now();draw();requestAnimationFrame(loop);
+}
+function beginFreeThrow(){
+  freeThrowMode=true;freeThrowTarget=.28+Math.random()*.48;charge=0;charging=false;chargeStartedAt=0;
+  player.x=0;player.z=3.55;player.jump=0;player.hasBall=true;player.dribble=false;player.shield=0;
+  ball={x:0,z:3.55,y:0,flight:0,fromX:0,fromZ:3.55,toX:0,toZ:.25,kind:'freeThrow',power:.35};
+  rivalPlayer.x=2.6;rivalPlayer.z=3.65;keys={};aimX=0;aimY=0;dunkAnim=0;rivalStealTimer=5.5+Math.random()*1.8;
+  bestMark.setAttribute('data-free-throw','true');freeThrowInfo.classList.remove('hidden');
+  const pl=document.querySelector('.powerlabel span:first-child');if(pl)pl.textContent='자유투 · 흰색 목표선에 맞추기';
+  $('powerPct').textContent='FREE THROW';showToast('FOUL! FREE THROW · R을 목표선에 맞춰 놓기');
+  setAimReadout();
+}
+function update(dt){
+  let dx=0,dz=0;
+  if(!freeThrowMode){if(keys.w)dz-=1;if(keys.s)dz+=1;if(keys.a)dx-=1;if(keys.d)dx+=1;}
+  const len=Math.hypot(dx,dz)||1;const speed=keys.l?2.8:3.9;
+  player.x=clamp(player.x+dx/len*speed*dt,-4.45,4.45);player.z=clamp(player.z+dz/len*speed*dt,.65,9.25);
+  player.dribble=!!keys.l&&!freeThrowMode;player.shield=player.dribble?1:0;
+  if(player.jump>0)player.jump=Math.max(0,player.jump-dt);
+  if(dunkAnim>0){dunkAnim=Math.max(0,dunkAnim-dt);if(dunkAnim<.2)dunkFlash=Math.max(0,dunkFlash-dt)}
+  if(charging)charge=Math.min(100,(performance.now()-chargeStartedAt)*.072);
+  if(!freeThrowMode){
+    const side=rivalPlayer.x>=player.x?1:-1;
+    const defendX=clamp(player.x+side*(player.hasBall?.94:1.38),-4.2,4.2),defendZ=clamp(player.z-.12,1.0,9.1);
+    const rx=defendX-rivalPlayer.x,rz=defendZ-rivalPlayer.z,rd=Math.hypot(rx,rz)||1;
+    if(rd>.07){const defendSpeed=player.hasBall?2.6:2.0;rivalPlayer.x=clamp(rivalPlayer.x+rx/rd*Math.min(rd,defendSpeed*dt),-4.2,4.2);rivalPlayer.z=clamp(rivalPlayer.z+rz/rd*Math.min(rd,defendSpeed*dt),1.0,9.1)}
+    rivalStealTimer-=dt;
+    const close=Math.hypot(player.x-rivalPlayer.x,player.z-rivalPlayer.z);
+    if(player.hasBall&&close<1.7&&rivalStealTimer<=0){
+      rivalStealTimer=4.2+Math.random()*2.7;
+      if(Math.random()<.34){beginFreeThrow();return}else showToast('REACH-IN · DEFENDED!');
+    }
+  }
+  if(ball.flight>0){ball.flight=Math.max(0,ball.flight-dt);const t=1-ball.flight/.82;ball.x=ball.fromX+(ball.toX-ball.fromX)*t;ball.z=ball.fromZ+(ball.toZ-ball.fromZ)*t;ball.y=Math.sin(t*Math.PI)*(1.5+(ball.power||.3)*1.15)}
+  else if(player.hasBall){ball.x=player.x+.18;ball.z=player.z;ball.y=.2+Math.abs(Math.sin(performance.now()/95))*.28}
+  shotQuality=Math.round(clamp(100-Math.abs(charge-(freeThrowMode?freeThrowTarget:idealPower())*100),0,100));
+  if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').classList.remove('show')}
+}
+function updateHud(){
+  const seconds=Math.ceil(timeLeft);$('clock').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
+  $('youScore').textContent=score;$('rivalScore').textContent=rival;$('qTag').textContent='QUARTER '+quarter;
+  const target=(freeThrowMode?freeThrowTarget:idealPower())*100;$('powerFill').style.width=charge+'%';bestMark.style.left=target+'%';
+  if(powerValue)powerValue.textContent=freeThrowMode?`현재 ${Math.round(charge)}% · 목표 ${Math.round(target)}%`:`현재 ${Math.round(charge)}% · 권장 ${Math.round(target)}%`;
+  $('powerPct').textContent=charging?'충전 중 · 흰색 선에서 놓기':freeThrowMode?'자유투 목표선 맞추기':`${Math.round(charge)}%`;
+  setAimReadout();document.querySelectorAll('.key').forEach(el=>{const k=el.dataset.key;const active=k==='aim'?['arrowleft','arrowright','arrowup','arrowdown'].some(a=>keys[a]):!!keys[k];el.classList.toggle('active',active)})
+}
+function shoot(){
+  if(!player.hasBall){showToast('공을 먼저 잡아야 해!');charge=0;return}
+  const power=clamp(charge/100,0,1);
+  if(freeThrowMode){
+    const error=Math.abs(power-freeThrowTarget);
+    const made=error<=.055?true:Math.random()<(error<.12?.65:error<.22?.32:.08);
+    freeThrowMode=false;freeThrowInfo.classList.add('hidden');bestMark.removeAttribute('data-free-throw');
+    const pl=document.querySelector('.powerlabel span:first-child');if(pl)pl.textContent='슛 파워 · 흰색 표시선에서 R 놓기';
+    player.hasBall=false;ball.flight=.82;ball.power=power;ball.fromX=0;ball.fromZ=3.55;ball.toX=0;ball.toZ=.22;ball.kind='freeThrow';
+    showToast(error<=.055?'PERFECT FREE THROW!':`FREE THROW · 오차 ${Math.round(error*100)}%`);
+    setTimeout(()=>{if(!playing)return;ball.flight=0;ball.x=player.x;ball.z=player.z;if(made){score+=1;showToast('FREE THROW IN · +1')}else showToast('FREE THROW MISSED');player.hasBall=true;charge=0;rivalStealTimer=5.2+Math.random()*1.4;$('youScore').textContent=score;updateHud()},850);
+    return;
+  }
+  const ideal=idealPower(),powerError=Math.abs(power-ideal);
+  const timing=clamp(1-powerError/.34,0,1),aimError=Math.hypot(aimX,aimY),aimAccuracy=clamp(1-aimError/.72,0,1);
+  const closeBonus=player.z<1.75?.09:player.z<3.6?.045:0;
+  const isThree=player.z>=5.65;
+  const longShotPenalty=player.z>7.55?.105:0;
+  const defenderDistance=Math.hypot(player.x-rivalPlayer.x,player.z-rivalPlayer.z);
+  const pressure=defenderDistance<1.05?.15:defenderDistance<1.6?.09:0;
+  const threePenalty=isThree?.14:0;
+  const dunk=player.jump>0&&player.z<2.35&&Math.abs(player.x)<1.7;
+  const chance=dunk?clamp(.59+timing*.18-pressure,.32,.79):clamp(.075+timing*.43+aimAccuracy*.075+closeBonus-longShotPenalty-pressure-threePenalty,.035,.64);
+  const made=Math.random()<chance,scoreValue=isThree?3:2;
+  player.hasBall=false;ball.flight=.82;ball.power=power;ball.fromX=player.x;ball.fromZ=player.z;ball.toX=dunk?0:clamp(aimX*1.395,-1,1);ball.toZ=dunk?.12:clamp(.137+aimY*1.49,.05,1.2);ball.kind=dunk?'dunk':'shot';
+  if(dunk){dunkAnim=.82;dunkFlash=.42;player.jump=Math.max(player.jump,.76);showToast('DUNK ANIMATION!');}
+  else showToast(powerError<.035?'PERFECT RELEASE':powerError<.09?'GOOD RELEASE':`SHOT · ${Math.round(chance*100)}% CHANCE`);
+  setTimeout(()=>{if(!playing)return;ball.flight=0;ball.x=player.x;ball.z=player.z;if(made){score+=dunk?2:scoreValue;showToast(dunk?'SLAM DUNK!':isThree?'3 POINTER!':'BUCKET!')}else showToast('MISSED · 거리와 게이지를 조절해!');$('youScore').textContent=score;player.hasBall=true;charge=0;dunkAnim=0;dunkFlash=0;rivalStealTimer=Math.max(rivalStealTimer,1.2);updateHud()},850)
+}
+function drawBall(x,y,r,rotation=0){
+  ctx.save();ctx.translate(x,y);ctx.rotate(rotation);const g=ctx.createRadialGradient(-r*.34,-r*.42,r*.08,0,0,r*1.15);g.addColorStop(0,'#ffbd78');g.addColorStop(.42,'#ff7a24');g.addColorStop(1,'#b93b0a');ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#4e210f';ctx.lineWidth=Math.max(1.1,r*.13);ctx.beginPath();ctx.arc(0,0,r*.94,-1.26,1.26);ctx.moveTo(-r*.94,0);ctx.quadraticCurveTo(0,-r*.24,r*.94,0);ctx.moveTo(-r*.4,-r*.82);ctx.quadraticCurveTo(r*.25,0,-r*.4,r*.82);ctx.stroke();ctx.fillStyle='#fff6';ctx.beginPath();ctx.ellipse(-r*.36,-r*.43,r*.24,r*.12,-.5,0,Math.PI*2);ctx.fill();ctx.restore()
+}
+function drawCourt(){
+  // Full overhead half-court: no vanishing point, no trapezoid, and no fake depth scaling.
+  const bg=ctx.createRadialGradient(500,260,30,500,310,650);bg.addColorStop(0,'#1b2c40');bg.addColorStop(.65,'#0c1726');bg.addColorStop(1,'#050911');ctx.fillStyle=bg;ctx.fillRect(0,0,1000,615);
+  // Arena trim and light strips.
+  for(let i=0;i<18;i++){const x=38+i*53;ctx.fillStyle=i%2?'#24374c':'#1b2c40';ctx.fillRect(x,12,43,25);ctx.fillStyle='#b1d7ff';ctx.globalAlpha=.07+(i%3)*.025;ctx.fillRect(x+5,15,32,2);ctx.globalAlpha=1}
+  ctx.save();ctx.shadowColor='#000b';ctx.shadowBlur=28;ctx.shadowOffsetY=12;ctx.fillStyle='#050911';ctx.beginPath();ctx.roundRect(38,42,924,548,15);ctx.fill();ctx.restore();
+  // Wooden floor.
+  ctx.save();ctx.beginPath();ctx.roundRect(48,48,904,536,9);ctx.clip();const wood=ctx.createLinearGradient(0,48,0,584);wood.addColorStop(0,'#dca16b');wood.addColorStop(.46,'#c9824b');wood.addColorStop(1,'#b66b3c');ctx.fillStyle=wood;ctx.fillRect(48,48,904,536);
+  for(let i=0;i<25;i++){const y=49+i*21.4;ctx.fillStyle=i%2?'rgba(255,220,171,.055)':'rgba(88,38,15,.045)';ctx.fillRect(48,y,904,21.4);ctx.strokeStyle='rgba(92,46,24,.22)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(48,y);ctx.lineTo(952,y);ctx.stroke()}
+  for(let y=70;y<580;y+=86){for(let x=70;x<940;x+=112){ctx.strokeStyle='rgba(255,235,194,.10)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+42,y+6);ctx.stroke()}}
+  const centerGlow=ctx.createRadialGradient(500,286,12,500,286,390);centerGlow.addColorStop(0,'rgba(255,239,191,.15)');centerGlow.addColorStop(1,'rgba(255,239,191,0)');ctx.fillStyle=centerGlow;ctx.fillRect(48,48,904,536);ctx.restore();
+  // Court lines and the key.
+  ctx.strokeStyle='#fff0d5';ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=2.5;ctx.strokeRect(55,55,890,522);
+  ctx.strokeStyle='rgba(255,244,224,.85)';ctx.lineWidth=2;
+  // Three-point line: broad arc and corner lines.
+  ctx.beginPath();ctx.moveTo(150,56);ctx.lineTo(150,154);ctx.bezierCurveTo(150,365,300,478,500,480);ctx.bezierCurveTo(700,478,850,365,850,154);ctx.lineTo(850,56);ctx.stroke();
+  // Restricted area, lane and free-throw markings.
+  ctx.fillStyle='rgba(57,107,151,.14)';ctx.fillRect(397,56,206,205);ctx.strokeStyle='rgba(255,244,224,.93)';ctx.lineWidth=2.2;ctx.strokeRect(397,56,206,205);
+  ctx.beginPath();ctx.moveTo(397,261);ctx.lineTo(603,261);ctx.stroke();ctx.beginPath();ctx.arc(500,261,57,0,Math.PI*2);ctx.stroke();
+  // Free throw semicircle is deliberately clipped by the lane, like a real court.
+  ctx.save();ctx.beginPath();ctx.rect(397,261,206,45);ctx.clip();ctx.beginPath();ctx.arc(500,261,57,0,Math.PI*2);ctx.stroke();ctx.restore();
+  // Backboard, rim, net and subtle glow.
+  ctx.save();ctx.shadowColor='#ff7a32';ctx.shadowBlur=18;ctx.strokeStyle='#ff8a42';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(500,87,19,7,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+  ctx.strokeStyle='#f6f8fc';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(454,65);ctx.lineTo(546,65);ctx.stroke();ctx.strokeStyle='rgba(249,248,241,.75)';ctx.lineWidth=1.1;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(500+i*6,91);ctx.lineTo(500+i*4,108);ctx.stroke()}ctx.beginPath();ctx.moveTo(485,99);ctx.lineTo(515,99);ctx.stroke();
+  // Bottom half-court / center line and circle.
+  ctx.strokeStyle='rgba(255,244,224,.9)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(56,555);ctx.lineTo(944,555);ctx.stroke();ctx.beginPath();ctx.arc(500,555,49,Math.PI,Math.PI*2);ctx.stroke();
+  // Painted lane label, muted and unobtrusive.
+  ctx.fillStyle='rgba(255,245,222,.72)';ctx.textAlign='center';ctx.font='900 10px system-ui,sans-serif';ctx.letterSpacing='2px';ctx.fillText('3 POINT ARC',500,473);ctx.font='800 9px system-ui,sans-serif';ctx.fillText('FREE THROW',500,325);ctx.letterSpacing='';
+  // Floor perimeter LEDs and clean title plate.
+  ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;ctx.strokeRect(61,61,878,510);
+  const plaque=ctx.createLinearGradient(720,0,935,0);plaque.addColorStop(0,'#0a1725b8');plaque.addColorStop(1,'#0a172500');ctx.fillStyle=plaque;ctx.fillRect(720,65,215,22);ctx.fillStyle='#fff3df';ctx.font='900 10px system-ui,sans-serif';ctx.textAlign='left';ctx.fillText('COURT CLASH  /  TRAINING ARENA',728,80);
+}
+function drawPlayerAt(x,z,color,skin,hair,hasBall,isUser){
+  const p=project(x,z),now=performance.now(),moving=isUser&&(keys.w||keys.a||keys.s||keys.d),dribbling=isUser&&hasBall&&(keys.l||moving)&&!freeThrowMode,phase=now/88;
+  const step=moving?Math.sin(now/72)*7:Math.sin(now/330)*1.5;
+  const bounce=dribbling?Math.abs(Math.sin(phase))*28:0;
+  const normalLift=isUser&&player.jump>0?Math.sin(clamp((1-player.jump/.95),0,1)*Math.PI)*68:0;
+  const stealPose=isUser&&stealAnim>0?stealAnim/.42:0, blockPose=isUser&&blockAnim>0?blockAnim/.62:0;
+  const dunkProgress=dunkAnim>0?1-dunkAnim/.82:0;
+  const dunkLift=isUser&&dunkAnim>0?Math.sin(clamp(dunkProgress,0,1)*Math.PI)*105:0;
+  const lift=Math.max(normalLift,dunkLift);
+  const chargePose=isUser&&charging?charge/100:0;
+  const dunkPose=isUser&&dunkAnim>0?1:0;
+  const armLift=dunkPose?(35+Math.sin(dunkProgress*Math.PI)*22):chargePose*17;
+  // The shadow stays on the floor while the body rises, making the jump readable.
+  ctx.save();ctx.globalAlpha=Math.max(.08,.24-lift*.0015);ctx.fillStyle='#03070d';ctx.beginPath();ctx.ellipse(p.x,p.y+10,25-lift*.045,10-lift*.025,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  if(isUser){ctx.save();ctx.globalAlpha=.18;ctx.strokeStyle=dunkPose?'#ffb56c':player.dribble?'#d6ff77':'#fff1cc';ctx.lineWidth=1.6;ctx.beginPath();ctx.ellipse(p.x,p.y+5,31,13,0,0,Math.PI*2);ctx.stroke();ctx.restore()}
+  ctx.save();ctx.translate(p.x,p.y-lift);ctx.rotate(dribbling?Math.sin(phase*.7)*.045: moving?Math.sin(now/120)*.018:0);ctx.lineCap='round';ctx.lineJoin='round';
+  // Legs and shoes, with larger cross-over steps for active dribbling.
+  const crossover=dribbling?Math.sin(phase*.52)*8:0;
+  ctx.strokeStyle='#29313d';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(-7,-10);ctx.lineTo(-10+step*.28+crossover*.35,4);ctx.lineTo(-12+step*.42+crossover,14);ctx.moveTo(7,-10);ctx.lineTo(10-step*.28-crossover*.35,4);ctx.lineTo(12-step*.42-crossover,14);ctx.stroke();
+  ctx.fillStyle='#f7f8fa';ctx.beginPath();ctx.roundRect(-20+step*.42+crossover,11,17,8,3);ctx.roundRect(4-step*.42-crossover,11,17,8,3);ctx.fill();ctx.fillStyle='#222a37';ctx.fillRect(-19+step*.42+crossover,16,15,2);ctx.fillRect(5-step*.42-crossover,16,15,2);
+  ctx.fillStyle='#f4f4f2';ctx.beginPath();ctx.roundRect(-15,0,9,10,2);ctx.roundRect(6,0,9,10,2);ctx.fill();
+  const jersey=ctx.createLinearGradient(-20,-42,18,-10);jersey.addColorStop(0,color);jersey.addColorStop(.5,color);jersey.addColorStop(1,'#171d2b');
+  ctx.fillStyle='#101725';ctx.beginPath();ctx.moveTo(-15,-15);ctx.lineTo(15,-15);ctx.lineTo(17,3);ctx.quadraticCurveTo(0,8,-17,3);ctx.closePath();ctx.fill();
+  ctx.fillStyle=jersey;ctx.beginPath();ctx.moveTo(-12,-43);ctx.quadraticCurveTo(-19,-41,-19,-31);ctx.lineTo(-15,-10);ctx.quadraticCurveTo(0,-4,15,-10);ctx.lineTo(19,-31);ctx.quadraticCurveTo(18,-41,12,-43);ctx.lineTo(5,-39);ctx.quadraticCurveTo(0,-36,-5,-39);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(255,255,255,.88)';ctx.lineWidth=1.8;ctx.stroke();
+  ctx.strokeStyle='#fff9';ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(-8,-39);ctx.lineTo(-8,-13);ctx.moveTo(8,-39);ctx.lineTo(8,-13);ctx.stroke();
+  // Dunks raise both arms above the player's head; normal run/dribble has a wide arm swing.
+  ctx.strokeStyle=skin;ctx.lineWidth=7.5;ctx.beginPath();
+  if(dunkPose){ctx.moveTo(-13,-38);ctx.lineTo(-18,-57-armLift*.28);ctx.lineTo(-9,-73-armLift*.12);ctx.moveTo(13,-38);ctx.lineTo(18,-57-armLift*.28);ctx.lineTo(9,-73-armLift*.12)}
+  else if(blockPose>0){ctx.moveTo(-13,-38);ctx.lineTo(-19,-56-blockPose*9);ctx.lineTo(-10,-73-blockPose*8);ctx.moveTo(13,-38);ctx.lineTo(19,-56-blockPose*9);ctx.lineTo(10,-73-blockPose*8)}
+  else if(stealPose>0){ctx.moveTo(-13,-38);ctx.lineTo(-25-stealPose*8,-30);ctx.lineTo(-37-stealPose*17,-18);ctx.moveTo(13,-38);ctx.lineTo(20,-27);ctx.lineTo(25,-15)}
+  else{ctx.moveTo(-13,-38);ctx.lineTo(dribbling?-28:-23,-26+step-armLift);ctx.lineTo(dribbling?-25:-18,-17-armLift);ctx.moveTo(13,-38);ctx.lineTo(dribbling?28:23,-26-step-armLift);ctx.lineTo(dribbling?25:18,-17-armLift)}ctx.stroke();
+  // Hand highlights help the dribble and dunk poses read clearly.
+  ctx.fillStyle=skin;ctx.beginPath();if(dunkPose||blockPose>0){ctx.arc(-10,-73-armLift*.12-blockPose*8,4.5,0,Math.PI*2);ctx.arc(10,-73-armLift*.12-blockPose*8,4.5,0,Math.PI*2)}else if(stealPose>0){ctx.arc(-37-stealPose*17,-18,4.6,0,Math.PI*2);ctx.arc(25,-15,4.2,0,Math.PI*2)}else{ctx.arc(dribbling?-25:-18,dribbling?5+bounce*.2:-17-armLift,4.2,0,Math.PI*2);ctx.arc(dribbling?25:18,dribbling?7+bounce*.17:-17-armLift,4.2,0,Math.PI*2)}ctx.fill();
+  ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='1000 12px system-ui,sans-serif';ctx.fillText(isUser?'07':'11',0,-20);ctx.strokeStyle='#fff8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-6,-42);ctx.quadraticCurveTo(0,-36,6,-42);ctx.stroke();
+  ctx.fillStyle='#111b2b';ctx.beginPath();ctx.roundRect(-16,-11,32,5,2);ctx.fill();ctx.fillStyle='#f6f7f8';ctx.fillRect(-12,-10,24,1.5);
+  ctx.fillStyle=skin;ctx.beginPath();ctx.roundRect(-4,-49,8,10,3);ctx.fill();ctx.beginPath();ctx.ellipse(0,-56,12,13,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=hair;ctx.beginPath();ctx.moveTo(-12,-57);ctx.quadraticCurveTo(-14,-72,-3,-71);ctx.quadraticCurveTo(9,-73,12,-60);ctx.lineTo(9,-56);ctx.quadraticCurveTo(1,-62,-5,-57);ctx.lineTo(-10,-53);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#17202b';ctx.beginPath();ctx.arc(-4,-56,1.4,0,Math.PI*2);ctx.arc(4,-56,1.4,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#7b4130';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(-2,-50);ctx.quadraticCurveTo(0,-48,3,-50);ctx.stroke();
+  if(isUser&&charging){ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.globalAlpha=.45+chargePose*.45;ctx.beginPath();ctx.arc(0,-32,29+chargePose*5,Math.PI*1.05,Math.PI*1.95);ctx.stroke();ctx.globalAlpha=1}
+  if(dribbling){ctx.save();ctx.strokeStyle='#d6ff77';ctx.globalAlpha=.65;ctx.lineWidth=1.6;ctx.setLineDash([3,5]);ctx.beginPath();ctx.ellipse(0,4,34+Math.sin(phase)*3,30+Math.cos(phase)*4,Math.sin(phase)*.12,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=.85;for(let i=0;i<3;i++){const a=phase*.55+i*Math.PI*2/3;ctx.fillStyle=i===1?'#fff2a8':'#c8ff68';ctx.beginPath();ctx.arc(Math.cos(a)*29,Math.sin(a)*24-13,1.5,0,Math.PI*2);ctx.fill()}ctx.restore()}
+  ctx.restore();
+  if(hasBall){
+    let bx,by,br=10;
+    if(dunkPose){bx=p.x+Math.sin(dunkProgress*Math.PI)*12;by=p.y-lift-82; br=11}
+    else if(dribbling){bx=p.x+Math.sin(phase*.52)*31;by=p.y-lift+8+bounce;br=10.5}
+    else{bx=p.x+19;by=p.y-lift-27+chargePose*7}
+    if(dribbling){ctx.save();ctx.globalAlpha=.24;ctx.strokeStyle='#d6ff77';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(bx,by+13,15,7,0,0,Math.PI*2);ctx.stroke();ctx.restore()}
+    drawBall(bx,by,br,now/180);
+  }
+}
+function draw(){
+  const w=canvas.width,h=canvas.height;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,w,h);ctx.save();ctx.scale(w/1000,h/615);drawCourt();
+  const rp=project(rivalPlayer.x,rivalPlayer.z),pp=project(player.x,player.z);
+  if(rp.y<pp.y)drawPlayerAt(rivalPlayer.x,rivalPlayer.z,'#3888d8','#ba855f','#211b1b',rivalPlayer.hasBall,false);
+  if(playing&&player.hasBall&&!freeThrowMode){const tx=500+aimX*120,ty=89+aimY*76;ctx.save();ctx.strokeStyle='rgba(255,255,255,.52)';ctx.lineWidth=1.8;ctx.setLineDash([6,7]);ctx.beginPath();ctx.moveTo(pp.x,pp.y-28);ctx.lineTo(tx,ty);ctx.stroke();ctx.setLineDash([]);ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.shadowColor='#fff';ctx.shadowBlur=10;ctx.beginPath();ctx.arc(tx,ty,13,0,Math.PI*2);ctx.moveTo(tx-20,ty);ctx.lineTo(tx+20,ty);ctx.moveTo(tx,ty-20);ctx.lineTo(tx,ty+20);ctx.stroke();ctx.shadowBlur=0;ctx.restore()}
+  if(rp.y>=pp.y)drawPlayerAt(rivalPlayer.x,rivalPlayer.z,'#3888d8','#ba855f','#211b1b',rivalPlayer.hasBall,false);
+  drawPlayerAt(player.x,player.z,chars[selected].jersey,chars[selected].skin,chars[selected].hair,player.hasBall,true);
+  if(dunkAnim>0){
+    const t=clamp(1-dunkAnim/.82,0,1),ease=t*t*(3-2*t),base=project(player.x,player.z);
+    const bx=base.x+(500-base.x)*ease,by=(base.y-65)*(1-ease)+87*ease-Math.sin(t*Math.PI)*27;
+    ctx.save();ctx.globalAlpha=.28;ctx.fillStyle='#03070d';ctx.beginPath();ctx.ellipse(bx,base.y+5,11,4,0,0,Math.PI*2);ctx.fill();ctx.restore();drawBall(bx,by,11,performance.now()/120);
+    if(t>.73){const k=(t-.73)/.27;ctx.save();ctx.globalAlpha=(1-k)*.8;ctx.strokeStyle='#fff3d7';ctx.lineWidth=2.2;ctx.beginPath();ctx.arc(500,91,18+k*15,-Math.PI*.1,Math.PI*1.1);ctx.stroke();ctx.strokeStyle='#ff8c42';ctx.beginPath();ctx.moveTo(480,82);ctx.lineTo(470-k*8,73-k*8);ctx.moveTo(520,82);ctx.lineTo(530+k*8,72-k*8);ctx.stroke();ctx.restore()}
+  }else if(ball.flight>0){const bp=project(ball.x,ball.z),by=bp.y-ball.y*48;ctx.save();ctx.globalAlpha=.3;ctx.fillStyle='#2d170a';ctx.beginPath();ctx.ellipse(bp.x,project(ball.x,ball.z).y+4,11,4,0,0,Math.PI*2);ctx.fill();ctx.restore();drawBall(bp.x,by,10,performance.now()/120)}
+  if(dunkFlash>0){ctx.save();const glow=ctx.createRadialGradient(500,91,3,500,91,76);glow.addColorStop(0,'rgba(255,173,87,'+Math.min(.34,dunkFlash*.8)+')');glow.addColorStop(1,'rgba(255,173,87,0)');ctx.fillStyle=glow;ctx.beginPath();ctx.ellipse(500,91,78,38,0,0,Math.PI*2);ctx.fill();ctx.restore()}
+  const vignette=ctx.createRadialGradient(500,300,220,500,300,570);vignette.addColorStop(0,'rgba(0,0,0,0)');vignette.addColorStop(1,'rgba(0,0,0,.34)');ctx.fillStyle=vignette;ctx.fillRect(0,0,1000,615);ctx.restore();
+}
+// V4: Only court controls are handled while the fullscreen game is active.
+const courtKeyCodes=new Set(['KeyW','KeyA','KeyS','KeyD','Space','KeyR','KeyF','KeyP','KeyL']);
+window.addEventListener('keydown',e=>{
+  const active=document.getElementById('appRoot').classList.contains('game-active');
+  if(!active)return;
+  // Arrows no longer aim. Capture them so they cannot alter the page or legacy aim state.
+  if(e.code.startsWith('Arrow')){e.preventDefault();e.stopImmediatePropagation();return}
+  if(e.ctrlKey&&e.code==='KeyW'){e.preventDefault();e.stopImmediatePropagation();return}
+  if(!courtKeyCodes.has(e.code))return;
+  e.preventDefault();e.stopImmediatePropagation();if(!playing)return;
+  const k=e.code==='Space'?' ':e.code.slice(3).toLowerCase();
+  keys[k]=true;
+  if(freeThrowMode){
+    if(e.code!=='KeyR'||freeThrowInFlight||freeThrowNextTimer>0||pendingCenterReset>0)return;
+  }else if(pendingCenterReset>0)return;
+  if(e.code==='Space'&&!e.repeat&&player.jump<=0&&!freeThrowMode&&!pendingCenterReset){player.jump=.95;showToast('JUMP!')}
+  if(e.code==='KeyR'&&!e.repeat&&player.hasBall&&!charging&&ball.flight<=0){charging=true;charge=0;chargeStartedAt=performance.now();showToast(freeThrowMode?`FREE THROW ${freeThrowAttempts+1}/2 · HIT THE RANDOM TARGET`:'R을 누르고 있다가 흰색 선에서 놓기')}
+  if(!e.repeat&&e.code==='KeyF')trySteal();
+  if(!e.repeat&&e.code==='KeyP')tryPass();
+},true);
+window.addEventListener('keyup',e=>{
+  const active=document.getElementById('appRoot').classList.contains('game-active');
+  if(!active)return;
+  if(e.code.startsWith('Arrow')){e.preventDefault();e.stopImmediatePropagation();return}
+  if(e.ctrlKey&&e.code==='KeyW'){e.preventDefault();e.stopImmediatePropagation();return}
+  if(!courtKeyCodes.has(e.code))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  const k=e.code==='Space'?' ':e.code.slice(3).toLowerCase();keys[k]=false;
+  if(e.code==='KeyR'&&playing&&charging){
+    charge=Math.min(100,(performance.now()-chargeStartedAt)*.072);charging=false;
+    if(freeThrowMode&&(freeThrowInFlight||freeThrowNextTimer>0||pendingCenterReset>0))return;
+    shoot();
+  }
+},true);
+window.addEventListener('blur',()=>{keys={};if(charging){charging=false;charge=0}});
+
+/* COURT CLASH V4 — possession, rebounds, 2-shot free throws and blocks */
+let ballVX=0,ballVZ=0,groundBounce=0,pickupGrace=0,shotMade=false,shotShooter='player',shotPoints=2;
+let pendingCenterReset=0,pendingCenterOwner='player',freeThrowAttempts=0,freeThrowInFlight=false,freeThrowNextTimer=0;
+let stealAnim=0,blockAnim=0,rivalActionTimer=3.1;
+
+function isThreePointShot(x,z){
+  const hoopDX=x*86,hoopDY=z*51-5;
+  // NBA-style arc distance, with the shorter corner three respected.
+  return Math.hypot(hoopDX,hoopDY)>=390||(Math.abs(x)>=4.0&&z>=1.4);
+}
+function setAimReadout(){
+  const target=Math.round(idealPower()*100);
+  $('aimReadout').textContent=freeThrowMode?`자유투 ${freeThrowAttempts+1}/2 · 랜덤 목표선 ${Math.round(freeThrowTarget*100)}%`:`현재 위치 권장 게이지 ${target}% · 방향키 조준 없음`;
+}
+function updateShotControls(){
+  const grid=$('keyGrid');
+  grid.innerHTML='<div class="key" data-key="w"><b>W A S D</b>이동</div><div class="key" data-key=" "><b>SPACE</b>점프</div><div class="key" data-key="r"><b>R 길게 → 놓기</b>슛 / 게이지</div><div class="key" data-key="l"><b>L</b>드리블</div><div class="key" data-key="f"><b>F</b>스틸 / 공중 블록</div><div class="key" data-key="p"><b>P</b>팀 패스</div><div class="key" data-key="dunk"><b>SPACE + R</b>골대 근처 덩크</div><div class="key" data-key="block"><b>점프 + F</b>공중 블록</div>';
+  document.querySelector('.instructions').innerHTML='<b>조작 방법</b><br>• <b>W A S D</b>: 이동 · <b>L</b>: 드리블<br>• <b>R 길게 누르기 → 흰색 목표선에서 놓기</b>: 슛<br>• 목표선은 일반 슛에서 위치별로, 자유투에서는 매번 무작위로 바뀌어.<br>• <b>SPACE</b>: 점프 · <b>SPACE + R</b>: 골대 근처 덩크<br>• <b>F</b>: 스틸 · <b>점프 중 F</b>: 공중 블록<br>• <b>P</b>: 2대2 팀 패스<br>• 방향키 조준은 제거했어. 골이 들어가면 득점한 팀이 중앙에서 공격권을 가져가.';
+}
+function resetAtCenter(owner='player'){
+  pendingCenterReset=0;pendingCenterOwner=owner;freeThrowMode=false;freeThrowInFlight=false;freeThrowNextTimer=0;freeThrowAttempts=0;
+  charging=false;charge=0;keys={};aimX=0;aimY=0;player.jump=0;player.dribble=false;player.shield=0;
+  freeThrowInfo.classList.add('hidden');bestMark.removeAttribute('data-free-throw');
+  const pl=document.querySelector('.powerlabel span:first-child');if(pl)pl.textContent='슛 파워 · 흰색 표시선에서 R 놓기';
+  if(owner==='rival'){
+    player.x=-.65;player.z=8.72;player.hasBall=false;
+    rivalPlayer.x=.65;rivalPlayer.z=8.62;rivalPlayer.hasBall=true;rivalActionTimer=2.5+Math.random()*1.2;
+    ball={x:rivalPlayer.x+.2,z:rivalPlayer.z,y:.2,flight:0,flightMax:.82,fromX:rivalPlayer.x,fromZ:rivalPlayer.z,toX:0,toZ:.25,kind:'held',loose:false,power:.45,shooter:'rival'};
+  }else{
+    player.x=0;player.z=8.72;player.hasBall=true;
+    rivalPlayer.x=1.35;rivalPlayer.z=7.72;rivalPlayer.hasBall=false;rivalActionTimer=3.0+Math.random()*1.2;
+    ball={x:player.x+.2,z:player.z,y:.2,flight:0,flightMax:.82,fromX:player.x,fromZ:player.z,toX:0,toZ:.25,kind:'held',loose:false,power:.45,shooter:'player'};
+  }
+  ballVX=ballVZ=groundBounce=pickupGrace=0;dunkAnim=0;dunkFlash=0;stealAnim=0;blockAnim=0;
+  $('powerFill').style.width='0%';charge=0;updateHud();showToast(owner==='rival'?'CENTER RESTART · RIVAL BALL':'CENTER RESTART · YOUR BALL');
+}
+startGame=function(){
+  playing=true;$('appRoot').classList.add('game-active');quarter=1;score=0;rival=0;timeLeft=quarterMinutes*60;
+  player={x:0,z:8.72,jump:0,vz:0,hasBall:true,dribble:false,shield:0};
+  rivalPlayer={x:1.35,z:7.72,hasBall:false};
+  ball={x:.2,z:8.72,y:.2,flight:0,flightMax:.82,fromX:0,fromZ:8.72,toX:0,toZ:.25,kind:'held',loose:false,power:.45,shooter:'player'};
+  keys={};charging=false;charge=0;aimX=0;aimY=0;dunkAnim=0;dunkFlash=0;freeThrowMode=false;freeThrowTarget=.5;freeThrowAttempts=0;freeThrowInFlight=false;freeThrowNextTimer=0;pendingCenterReset=0;ballVX=ballVZ=groundBounce=pickupGrace=0;stealAnim=blockAnim=0;rivalStealTimer=4.8;rivalActionTimer=3.1;
+  freeThrowInfo.classList.add('hidden');bestMark.removeAttribute('data-free-throw');
+  $('startOverlay').classList.add('hidden');$('quarterOverlay').classList.add('hidden');$('endOverlay').classList.add('hidden');$('gameHud').style.display='block';
+  $('youScore').textContent='0';$('rivalScore').textContent='0';$('qTag').textContent='QUARTER 1';$('powerFill').style.width='0%';$('powerPct').textContent='0%';
+  updateShotControls();setAimReadout();showToast('CENTER TIP-OFF · L DRIBBLE · SPACE + F BLOCK');last=performance.now();draw();requestAnimationFrame(loop);
+};
+beginFreeThrow=function(){
+  freeThrowMode=true;freeThrowAttempts=0;freeThrowInFlight=false;freeThrowNextTimer=0;freeThrowTarget=.14+Math.random()*.72;
+  charging=false;charge=0;player.x=0;player.z=3.55;player.jump=0;player.hasBall=true;player.dribble=false;player.shield=0;
+  rivalPlayer.x=-1.72;rivalPlayer.z=3.63;rivalPlayer.hasBall=false;
+  ball={x:.2,z:3.55,y:.18,flight:0,flightMax:.82,fromX:0,fromZ:3.55,toX:0,toZ:.25,kind:'held',loose:false,power:.35,shooter:'player'};
+  ballVX=ballVZ=0;keys={};aimX=0;aimY=0;dunkAnim=0;rivalStealTimer=5.5+Math.random()*1.8;
+  bestMark.setAttribute('data-free-throw','true');freeThrowInfo.classList.remove('hidden');
+  freeThrowInfo.innerHTML='<div class="ft-kicker">PERSONAL FOUL</div><div class="ft-title">FREE THROW 1/2</div><p>매번 바뀌는 흰색 목표선에 게이지를 맞춰.<br>R을 누르고 목표선에서 놓으면 돼.</p>';
+  const pl=document.querySelector('.powerlabel span:first-child');if(pl)pl.textContent='자유투 1/2 · 랜덤 목표선';
+  showToast('FOUL! TWO FREE THROWS · TARGET IS RANDOM');setAimReadout();
+};
+function prepareNextFreeThrow(){
+  if(freeThrowAttempts>=2){
+    freeThrowMode=false;freeThrowInFlight=false;freeThrowInfo.classList.add('hidden');bestMark.removeAttribute('data-free-throw');
+    const pl=document.querySelector('.powerlabel span:first-child');if(pl)pl.textContent='슛 파워 · 흰색 표시선에서 R 놓기';
+    pendingCenterOwner='player';pendingCenterReset=.65;ball={x:0,z:.25,y:.06,flight:0,flightMax:.82,fromX:0,fromZ:.25,toX:0,toZ:.25,kind:'made',loose:false,power:.35,shooter:'player'};player.hasBall=false;rivalPlayer.hasBall=false;showToast('FREE THROWS COMPLETE · CENTER RESTART');return;
+  }
+  freeThrowTarget=.14+Math.random()*.72;freeThrowInFlight=false;charge=0;charging=false;player.x=0;player.z=3.55;player.jump=0;player.hasBall=true;player.dribble=false;
+  rivalPlayer.x=-1.72;rivalPlayer.z=3.63;rivalPlayer.hasBall=false;
+  ball={x:.2,z:3.55,y:.18,flight:0,flightMax:.82,fromX:0,fromZ:3.55,toX:0,toZ:.25,kind:'held',loose:false,power:.35,shooter:'player'};
+  freeThrowInfo.innerHTML=`<div class="ft-kicker">PERSONAL FOUL</div><div class="ft-title">FREE THROW 2/2</div><p>두 번째 자유투야. 목표선 위치가 다시 바뀌었어.<br>R을 목표선에 맞춰 놓아.</p>`;
+  const pl=document.querySelector('.powerlabel span:first-child');if(pl)pl.textContent='자유투 2/2 · 랜덤 목표선';
+  showToast('FREE THROW 2/2 · NEW RANDOM TARGET');setAimReadout();
+}
+function launchRimBounce(){
+  const p=clamp(ball.power||.5,0,1),spread=.65+p*2.45;
+  ball.flight=.34+p*.12;ball.flightMax=ball.flight;ball.fromX=0;ball.fromZ=.25;
+  ball.toX=clamp((Math.random()-.5)*spread*2,-4.25,4.25);ball.toZ=clamp(.65+p*1.55+Math.random()*.35,.68,3.25);
+  ball.x=ball.fromX;ball.z=ball.fromZ;ball.y=.12;ball.kind='rimBounce';ball.loose=false;
+  ballVX=ballVZ=0;showToast('OFF THE RIM! CHASE THE REBOUND');
+}
+function finishBallFlight(){
+  if(ball.kind==='freeThrow'){
+    if(shotMade){score+=1;showToast(`FREE THROW ${freeThrowAttempts+1}/2 · GOOD +1`)}else showToast(`FREE THROW ${freeThrowAttempts+1}/2 · MISSED`);
+    $('youScore').textContent=score;freeThrowAttempts++;freeThrowInFlight=false;freeThrowNextTimer=.62;player.hasBall=false;ball.loose=false;ball.kind='ft-result';ball.x=0;ball.z=.25;ball.y=.05;updateHud();return;
+  }
+  if(ball.kind==='pass'){
+    player.hasBall=true;player.x=ball.toX;player.z=ball.toZ;ball.loose=false;ball.kind='held';return;
+  }
+  if(ball.kind==='rimBounce'){
+    ball.loose=true;ball.kind='loose';ball.x=ball.toX;ball.z=ball.toZ;ball.y=.16;groundBounce=.36;pickupGrace=.16;
+    const p=clamp(ball.power||.5,0,1);ballVX=(Math.random()-.5)*(1.2+p*3.6);ballVZ=.65+p*3.15;
+    showToast('REBOUND ON THE FLOOR · MOVE CLOSE TO PICK IT UP');return;
+  }
+  if(ball.kind==='shot'||ball.kind==='dunk'||ball.kind==='rivalShot'){
+    if(shotMade){
+      const owner=shotShooter==='rival'?'rival':'player';if(owner==='rival')rival+=shotPoints;else score+=shotPoints;
+      $('youScore').textContent=score;$('rivalScore').textContent=rival;
+      showToast(owner==='rival'?'RIVAL SCORES · CENTER RESTART':'BUCKET! CENTER RESTART · YOUR BALL');
+      pendingCenterOwner=owner;pendingCenterReset=.72;ball.loose=false;ball.kind='made';ball.x=0;ball.z=.25;ball.y=.05;player.hasBall=false;rivalPlayer.hasBall=false;updateHud();return;
+    }
+    player.hasBall=false;rivalPlayer.hasBall=false;launchRimBounce();return;
+  }
+}
+function update(dt){
+  // Advance timers first; scoring restarts and foul sequences temporarily lock movement.
+  if(pendingCenterReset>0){pendingCenterReset-=dt;if(pendingCenterReset<=0){resetAtCenter(pendingCenterOwner);return}}
+  if(freeThrowNextTimer>0){freeThrowNextTimer-=dt;if(freeThrowNextTimer<=0){prepareNextFreeThrow();return}}
+  if(pickupGrace>0)pickupGrace=Math.max(0,pickupGrace-dt);
+  const locked=freeThrowMode||pendingCenterReset>0||freeThrowNextTimer>0;
+  let dx=0,dz=0;
+  if(!locked){if(keys.w)dz-=1;if(keys.s)dz+=1;if(keys.a)dx-=1;if(keys.d)dx+=1;}
+  const len=Math.hypot(dx,dz)||1;const speed=keys.l?3.0:3.9;
+  player.x=clamp(player.x+dx/len*speed*dt,-4.42,4.42);player.z=clamp(player.z+dz/len*speed*dt,.65,9.25);
+  player.dribble=!!keys.l&&player.hasBall&&!freeThrowMode;player.shield=player.dribble?1:0;
+  if(player.jump>0)player.jump=Math.max(0,player.jump-dt);
+  dunkAnim=Math.max(0,dunkAnim-dt);dunkFlash=Math.max(0,dunkFlash-dt);stealAnim=Math.max(0,stealAnim-dt);blockAnim=Math.max(0,blockAnim-dt);
+  if(charging)charge=Math.min(100,(performance.now()-chargeStartedAt)*.072);
+  if(!locked){
+    if(ball.loose){
+      // Both players chase a loose ball; nearest player wins possession on contact.
+      const rx=ball.x-rivalPlayer.x,rz=ball.z-rivalPlayer.z,rd=Math.hypot(rx,rz)||1;
+      if(rd>.22){rivalPlayer.x=clamp(rivalPlayer.x+rx/rd*Math.min(rd,2.45*dt),-4.35,4.35);rivalPlayer.z=clamp(rivalPlayer.z+rz/rd*Math.min(rd,2.45*dt),.65,9.2)}
+    }else if(rivalPlayer.hasBall){
+      const tx=clamp(player.x+(player.x<rivalPlayer.x?1:-1)*1.15,-4.2,4.2),tz=clamp(player.z-.2,1,9.1);
+      const rx=tx-rivalPlayer.x,rz=tz-rivalPlayer.z,rd=Math.hypot(rx,rz)||1;
+      if(rd>.08){rivalPlayer.x=clamp(rivalPlayer.x+rx/rd*Math.min(rd,1.9*dt),-4.3,4.3);rivalPlayer.z=clamp(rivalPlayer.z+rz/rd*Math.min(rd,1.9*dt),.65,9.2)}
+      rivalActionTimer-=dt;
+      if(rivalActionTimer<=0&&ball.flight<=0){
+        const dist=Math.hypot(rivalPlayer.x*86,rivalPlayer.z*51-5),three=dist>=390||(Math.abs(rivalPlayer.x)>=4&&rivalPlayer.z>=1.4);
+        shotShooter='rival';shotPoints=three?3:2;shotMade=Math.random()<.29;
+        const p=.53+Math.random()*.35;ball={x:rivalPlayer.x+.15,z:rivalPlayer.z,y:.2,flight:.82,flightMax:.82,fromX:rivalPlayer.x,fromZ:rivalPlayer.z,toX:0,toZ:.25,kind:'rivalShot',loose:false,power:p,shooter:'rival'};
+        rivalPlayer.hasBall=false;rivalActionTimer=3.0+Math.random()*1.6;showToast('RIVAL SHOT · JUMP + F TO BLOCK');
+      }
+    }else if(!ball.loose&&player.hasBall){
+      const side=rivalPlayer.x>=player.x?1:-1;const defendX=clamp(player.x+side*.95,-4.2,4.2),defendZ=clamp(player.z-.12,1,9.1);
+      const rx=defendX-rivalPlayer.x,rz=defendZ-rivalPlayer.z,rd=Math.hypot(rx,rz)||1;
+      if(rd>.07){rivalPlayer.x=clamp(rivalPlayer.x+rx/rd*Math.min(rd,2.55*dt),-4.2,4.2);rivalPlayer.z=clamp(rivalPlayer.z+rz/rd*Math.min(rd,2.55*dt),.65,9.1)}
+      rivalStealTimer-=dt;const close=Math.hypot(player.x-rivalPlayer.x,player.z-rivalPlayer.z);
+      if(player.hasBall&&close<1.45&&rivalStealTimer<=0&&Math.random()<.22){rivalStealTimer=5+Math.random()*2;beginFreeThrow();return}
+    }
+  }
+  if(ball.flight>0){
+    ball.flight=Math.max(0,ball.flight-dt);const duration=Math.max(.08,ball.flightMax||.82),t=clamp(1-ball.flight/duration,0,1);
+    ball.x=ball.fromX+(ball.toX-ball.fromX)*t;ball.z=ball.fromZ+(ball.toZ-ball.fromZ)*t;
+    const peak=ball.kind==='rimBounce'?1.35:2.25+(ball.power||.4)*.55;ball.y=Math.sin(t*Math.PI)*peak;
+    if(ball.flight<=0)finishBallFlight();
+  }else if(ball.loose){
+    ball.x+=ballVX*dt;ball.z+=ballVZ*dt;
+    if(ball.x<-4.35){ball.x=-4.35;ballVX=Math.abs(ballVX)*.72}else if(ball.x>4.35){ball.x=4.35;ballVX=-Math.abs(ballVX)*.72}
+    if(ball.z<.65){ball.z=.65;ballVZ=Math.abs(ballVZ)*.64}else if(ball.z>9.2){ball.z=9.2;ballVZ=-Math.abs(ballVZ)*.64}
+    const friction=Math.pow(.984,dt*60);ballVX*=friction;ballVZ*=friction;groundBounce=Math.max(0,groundBounce-dt*.8);ball.y=.025+Math.abs(Math.sin(performance.now()/62))*groundBounce*.4;
+    if(pickupGrace<=0){
+      const pd=Math.hypot(player.x-ball.x,player.z-ball.z),rd=Math.hypot(rivalPlayer.x-ball.x,rivalPlayer.z-ball.z);
+      if(pd<.66&&(pd<=rd+.15||rd>.95)){
+        player.hasBall=true;player.dribble=false;player.shield=0;ball.loose=false;ball.kind='held';ballVX=ballVZ=0;showToast('REBOUND! BALL RECOVERED');
+      }else if(rd<.64&&rd<pd){
+        rivalPlayer.hasBall=true;ball.loose=false;ball.kind='held';ballVX=ballVZ=0;rivalActionTimer=1.8+Math.random()*1.2;showToast('RIVAL RECOVERS THE REBOUND');
+      }
+    }
+  }else if(player.hasBall){ball.x=player.x+.22;ball.z=player.z;ball.y=.12+Math.abs(Math.sin(performance.now()/110))*.25}
+  else if(rivalPlayer.hasBall){ball.x=rivalPlayer.x+.22;ball.z=rivalPlayer.z;ball.y=.12+Math.abs(Math.sin(performance.now()/110))*.25}
+  shotQuality=Math.round(clamp(100-Math.abs(charge-(freeThrowMode?freeThrowTarget:idealPower())*100),0,100));
+  if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').classList.remove('show')}
+}
+function updateHud(){
+  const seconds=Math.ceil(timeLeft);$('clock').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
+  $('youScore').textContent=score;$('rivalScore').textContent=rival;$('qTag').textContent='QUARTER '+quarter;
+  const target=(freeThrowMode?freeThrowTarget:idealPower())*100;$('powerFill').style.width=charge+'%';bestMark.style.left=target+'%';
+  if(powerValue)powerValue.textContent=freeThrowMode?`현재 ${Math.round(charge)}% · 랜덤 목표 ${Math.round(target)}%`:`현재 ${Math.round(charge)}% · 추천 ${Math.round(target)}%`;
+  $('powerPct').textContent=charging?'충전 중 · 흰색 선에서 놓기':freeThrowMode?`자유투 ${freeThrowAttempts+1}/2 · 랜덤 목표 맞추기`:`게이지 ${Math.round(charge)}%`;
+  setAimReadout();document.querySelectorAll('.key').forEach(el=>{const k=el.dataset.key;el.classList.toggle('active',!!keys[k]||(k==='r'&&charging))});
+}
+shoot=function(){
+  if(ball.flight>0||pendingCenterReset>0){return}
+  if(!player.hasBall){showToast('공을 먼저 주워야 해!');charge=0;return}
+  const power=clamp(charge/100,0,1);
+  if(freeThrowMode){
+    if(freeThrowInFlight||freeThrowNextTimer>0)return;
+    const error=Math.abs(power-freeThrowTarget);shotMade=error<=.045?true:Math.random()<clamp(.55-error*1.55,.04,.5);
+    shotShooter='player';shotPoints=1;freeThrowInFlight=true;player.hasBall=false;
+    ball={x:player.x+.15,z:player.z,y:.15,flight:.82,flightMax:.82,fromX:player.x,fromZ:player.z,toX:0,toZ:.25,kind:'freeThrow',loose:false,power:power,shooter:'player'};
+    showToast(error<=.045?'PERFECT FREE THROW':`FREE THROW ${freeThrowAttempts+1}/2 · RELEASE ERROR ${Math.round(error*100)}%`);return;
+  }
+  const ideal=idealPower(),powerError=Math.abs(power-ideal),timing=clamp(1-powerError/.31,0,1);
+  const distance=Math.hypot(player.x*86,player.z*51-5),isThree=isThreePointShot(player.x,player.z);
+  const closeBonus=player.z<1.75?.13:player.z<3.6?.06:0;
+  const longPenalty=distance>520?.15:distance>450?.08:0;
+  const defenderDistance=Math.hypot(player.x-rivalPlayer.x,player.z-rivalPlayer.z),pressure=defenderDistance<.95?.17:defenderDistance<1.5?.10:0;
+  const dunk=player.jump>0&&player.z<2.35&&Math.abs(player.x)<1.7;
+  let chance=dunk?clamp(.54+timing*.16-pressure,.28,.75):clamp(.065+timing*.42+closeBonus-longPenalty-pressure-(isThree?.095:0),.035,.59);
+  shotMade=Math.random()<chance;shotShooter='player';shotPoints=dunk?2:(isThree?3:2);
+  ballVX=ballVZ=0;ball.loose=false;player.hasBall=false;rivalPlayer.hasBall=false;
+  ball={x:player.x+.15,z:player.z,y:.15,flight:.82,flightMax:.82,fromX:player.x,fromZ:player.z,toX:0,toZ:.25,kind:dunk?'dunk':'shot',loose:false,power,shooter:'player'};
+  if(dunk){dunkAnim=.82;dunkFlash=.42;player.jump=Math.max(player.jump,.76);showToast('SLAM DUNK ATTEMPT!')}
+  else showToast(`${isThree?'3-POINT':'FIELD'} SHOT · ${Math.round(chance*100)}% CHANCE`);
+};
+trySteal=function(){
+  if(!playing||freeThrowMode||pendingCenterReset>0)return;
+  const distToRival=Math.hypot(player.x-rivalPlayer.x,player.z-rivalPlayer.z);
+  // A jump + F blocks a rival-held ball or a shot flying close to the player.
+  if(player.jump>.12&&(rivalPlayer.hasBall&&distToRival<2.05)){
+    blockAnim=.62;stealAnim=.18;rivalPlayer.hasBall=false;player.hasBall=false;ball.flight=0;ball.flightMax=.82;ball.loose=true;ball.kind='loose';ball.x=(player.x+rivalPlayer.x)/2;ball.z=(player.z+rivalPlayer.z)/2;ball.y=.46;ballVX=(Math.random()-.5)*3.2;ballVZ=.8+Math.random()*1.8;groundBounce=.3;pickupGrace=.32;showToast('BLOCK! BALL PUNCHED LOOSE');return;
+  }
+  if(player.jump>.12&&ball.flight>0&&ball.kind==='rivalShot'&&ball.y>.45&&Math.hypot(player.x-ball.x,player.z-ball.z)<1.85){
+    blockAnim=.62;ball.flight=0;ball.loose=true;ball.kind='loose';ball.y=.5;ballVX=(Math.random()-.5)*3.8;ballVZ=.8+Math.random()*2;groundBounce=.35;pickupGrace=.32;showToast('CHASE-DOWN BLOCK!');return;
+  }
+  if(!rivalPlayer.hasBall){if(ball.loose)showToast('GET CLOSER TO THE LOOSE BALL');else showToast(player.hasBall?'DEFEND · F IS FOR STEAL':'NO BALL TO STEAL');return}
+  stealAnim=.42;
+  if(distToRival<1.95&&Math.random()<.63){
+    const bx=(player.x+rivalPlayer.x)/2,bz=(player.z+rivalPlayer.z)/2;rivalPlayer.hasBall=false;player.hasBall=false;ball.flight=0;ball.loose=true;ball.kind='loose';ball.x=bx;ball.z=bz;ball.y=.28;ballVX=(Math.random()-.5)*3.4;ballVZ=.65+Math.random()*2;groundBounce=.28;pickupGrace=.3;showToast('STEAL! BALL KNOCKED LOOSE · RECOVER IT');
+  }else showToast(distToRival<1.95?'REACH-IN MISSED · KEEP PRESSING':'GET CLOSER TO STEAL');
+};
+tryPass=function(){
+  if(mode!=='2v2'){showToast('PASS ONLY IN 2 VS 2');return}
+  if(!player.hasBall||freeThrowMode){showToast('NO BALL TO PASS');return}
+  player.hasBall=false;ball.loose=false;ball={x:player.x+.2,z:player.z,y:.2,flight:.48,flightMax:.48,fromX:player.x,fromZ:player.z,toX:clamp(player.x-1.8,-4,4),toZ:clamp(player.z-.3,.7,9),kind:'pass',loose:false,power:.3,shooter:'player'};showToast('PASS TO TEAMMATE');
+};
+function drawCourt(){
+  const bg=ctx.createRadialGradient(500,260,30,500,310,650);bg.addColorStop(0,'#1b2c40');bg.addColorStop(.65,'#0c1726');bg.addColorStop(1,'#050911');ctx.fillStyle=bg;ctx.fillRect(0,0,1000,615);
+  for(let i=0;i<18;i++){const x=38+i*53;ctx.fillStyle=i%2?'#24374c':'#1b2c40';ctx.fillRect(x,12,43,25);ctx.fillStyle='#b1d7ff';ctx.globalAlpha=.07+(i%3)*.025;ctx.fillRect(x+5,15,32,2);ctx.globalAlpha=1}
+  ctx.save();ctx.shadowColor='#000b';ctx.shadowBlur=28;ctx.shadowOffsetY=12;ctx.fillStyle='#050911';ctx.beginPath();ctx.roundRect(38,42,924,548,15);ctx.fill();ctx.restore();
+  ctx.save();ctx.beginPath();ctx.roundRect(48,48,904,536,9);ctx.clip();const wood=ctx.createLinearGradient(0,48,0,584);wood.addColorStop(0,'#dca16b');wood.addColorStop(.46,'#c9824b');wood.addColorStop(1,'#b66b3c');ctx.fillStyle=wood;ctx.fillRect(48,48,904,536);
+  for(let i=0;i<25;i++){const y=49+i*21.4;ctx.fillStyle=i%2?'rgba(255,220,171,.055)':'rgba(88,38,15,.045)';ctx.fillRect(48,y,904,21.4);ctx.strokeStyle='rgba(92,46,24,.22)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(48,y);ctx.lineTo(952,y);ctx.stroke()}
+  for(let y=70;y<580;y+=86){for(let x=70;x<940;x+=112){ctx.strokeStyle='rgba(255,235,194,.10)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+42,y+6);ctx.stroke()}}
+  const centerGlow=ctx.createRadialGradient(500,286,12,500,286,390);centerGlow.addColorStop(0,'rgba(255,239,191,.15)');centerGlow.addColorStop(1,'rgba(255,239,191,0)');ctx.fillStyle=centerGlow;ctx.fillRect(48,48,904,536);ctx.restore();
+  ctx.strokeStyle='#fff0d5';ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=2.5;ctx.strokeRect(55,55,890,522);ctx.strokeStyle='rgba(255,244,224,.9)';ctx.lineWidth=2;
+  // Wider NBA-style three-point line, with broad arc and long corner sections.
+  ctx.beginPath();ctx.moveTo(150,56);ctx.lineTo(150,154);ctx.bezierCurveTo(150,365,300,478,500,480);ctx.bezierCurveTo(700,478,850,365,850,154);ctx.lineTo(850,56);ctx.stroke();
+  ctx.fillStyle='rgba(57,107,151,.14)';ctx.fillRect(397,56,206,205);ctx.strokeStyle='rgba(255,244,224,.93)';ctx.lineWidth=2.2;ctx.strokeRect(397,56,206,205);ctx.beginPath();ctx.moveTo(397,261);ctx.lineTo(603,261);ctx.stroke();ctx.beginPath();ctx.arc(500,261,57,0,Math.PI*2);ctx.stroke();
+  ctx.save();ctx.beginPath();ctx.rect(397,261,206,45);ctx.clip();ctx.beginPath();ctx.arc(500,261,57,0,Math.PI*2);ctx.stroke();ctx.restore();
+  ctx.save();ctx.shadowColor='#ff7a32';ctx.shadowBlur=18;ctx.strokeStyle='#ff8a42';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(500,87,19,7,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+  ctx.strokeStyle='#f6f8fc';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(454,65);ctx.lineTo(546,65);ctx.stroke();ctx.strokeStyle='rgba(249,248,241,.75)';ctx.lineWidth=1.1;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(500+i*6,91);ctx.lineTo(500+i*4,108);ctx.stroke()}ctx.beginPath();ctx.moveTo(485,99);ctx.lineTo(515,99);ctx.stroke();
+  ctx.strokeStyle='rgba(255,244,224,.9)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(56,555);ctx.lineTo(944,555);ctx.stroke();ctx.beginPath();ctx.arc(500,555,49,Math.PI,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='rgba(255,245,222,.72)';ctx.textAlign='center';ctx.font='900 10px system-ui,sans-serif';ctx.letterSpacing='2px';ctx.fillText('3 POINT ARC',500,473);ctx.font='800 9px system-ui,sans-serif';ctx.fillText('FREE THROW',500,325);ctx.letterSpacing='';
+  ctx.strokeStyle='rgba(255,255,255,.16)';ctx.lineWidth=1;ctx.strokeRect(61,61,878,510);const plaque=ctx.createLinearGradient(720,0,935,0);plaque.addColorStop(0,'#0a1725b8');plaque.addColorStop(1,'#0a172500');ctx.fillStyle=plaque;ctx.fillRect(720,65,215,22);ctx.fillStyle='#fff3df';ctx.font='900 10px system-ui,sans-serif';ctx.textAlign='left';ctx.fillText('COURT CLASH  /  FULL-COURT SHOT ARC',728,80);
+}
+function draw(){
+  const w=canvas.width,h=canvas.height;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,w,h);ctx.save();ctx.scale(w/1000,h/615);drawCourt();
+  const rp=project(rivalPlayer.x,rivalPlayer.z),pp=project(player.x,player.z);
+  if(freeThrowMode&&mode==='2v2')drawPlayerAt(1.72,3.64,'#3888d8','#ba855f','#211b1b',false,false);
+  if(rp.y<pp.y)drawPlayerAt(rivalPlayer.x,rivalPlayer.z,'#3888d8','#ba855f','#211b1b',rivalPlayer.hasBall,false);
+  drawPlayerAt(player.x,player.z,chars[selected].jersey,chars[selected].skin,chars[selected].hair,player.hasBall,true);
+  if(rp.y>=pp.y)drawPlayerAt(rivalPlayer.x,rivalPlayer.z,'#3888d8','#ba855f','#211b1b',rivalPlayer.hasBall,false);
+  if(dunkAnim>0){const t=clamp(1-dunkAnim/.82,0,1),ease=t*t*(3-2*t),base=project(player.x,player.z);const bx=base.x+(500-base.x)*ease,by=(base.y-65)*(1-ease)+87*ease-Math.sin(t*Math.PI)*27;ctx.save();ctx.globalAlpha=.28;ctx.fillStyle='#03070d';ctx.beginPath();ctx.ellipse(bx,base.y+5,11,4,0,0,Math.PI*2);ctx.fill();ctx.restore();drawBall(bx,by,11,performance.now()/120);if(t>.73){const k=(t-.73)/.27;ctx.save();ctx.globalAlpha=(1-k)*.8;ctx.strokeStyle='#fff3d7';ctx.lineWidth=2.2;ctx.beginPath();ctx.arc(500,91,18+k*15,-Math.PI*.1,Math.PI*1.1);ctx.stroke();ctx.strokeStyle='#ff8c42';ctx.beginPath();ctx.moveTo(480,82);ctx.lineTo(470-k*8,73-k*8);ctx.moveTo(520,82);ctx.lineTo(530+k*8,72-k*8);ctx.stroke();ctx.restore()}}
+  else if(ball.flight>0){const bp=project(ball.x,ball.z),by=bp.y-ball.y*48;ctx.save();ctx.globalAlpha=.23;ctx.fillStyle='#090c12';ctx.beginPath();ctx.ellipse(bp.x,bp.y+4,11,4,0,0,Math.PI*2);ctx.fill();ctx.restore();drawBall(bp.x,by,10,performance.now()/105)}
+  else if(ball.loose||(pendingCenterReset>0&&ball.kind==='made')||(freeThrowNextTimer>0&&ball.kind==='ft-result')){const bp=project(ball.x,ball.z),by=bp.y-ball.y*48;ctx.save();ctx.globalAlpha=.23;ctx.fillStyle='#090c12';ctx.beginPath();ctx.ellipse(bp.x,bp.y+4,11,4,0,0,Math.PI*2);ctx.fill();ctx.restore();drawBall(bp.x,by,10,performance.now()/105)}
+  if(blockAnim>0){ctx.save();ctx.globalAlpha=clamp(blockAnim/.62,0,1);ctx.strokeStyle='#bfe7ff';ctx.lineWidth=4;ctx.shadowColor='#69c8ff';ctx.shadowBlur=18;ctx.beginPath();ctx.arc(pp.x,pp.y-45,38+(1-blockAnim/.62)*20,Math.PI*1.05,Math.PI*1.95);ctx.stroke();ctx.fillStyle='#e6f7ff';ctx.font='1000 14px system-ui,sans-serif';ctx.textAlign='center';ctx.fillText('BLOCK!',pp.x,pp.y-95);ctx.restore()}
+  if(stealAnim>0){ctx.save();ctx.globalAlpha=clamp(stealAnim/.42,0,1)*.65;ctx.strokeStyle='#d6ff77';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(pp.x-20,pp.y-45);ctx.lineTo(pp.x-52,pp.y-26);ctx.lineTo(pp.x-65,pp.y-8);ctx.stroke();ctx.restore()}
+  if(dunkFlash>0){ctx.save();const glow=ctx.createRadialGradient(500,91,3,500,91,76);glow.addColorStop(0,'rgba(255,173,87,'+Math.min(.34,dunkFlash*.8)+')');glow.addColorStop(1,'rgba(255,173,87,0)');ctx.fillStyle=glow;ctx.beginPath();ctx.ellipse(500,91,78,38,0,0,Math.PI*2);ctx.fill();ctx.restore()}
+  const vignette=ctx.createRadialGradient(500,300,220,500,300,570);vignette.addColorStop(0,'rgba(0,0,0,0)');vignette.addColorStop(1,'rgba(0,0,0,.34)');ctx.fillStyle=vignette;ctx.fillRect(0,0,1000,615);ctx.restore();
+}
+
+// Keep the redesigned canvas fresh in the lobby as well, without revealing it in the lobby layout.
+updateShotControls();draw();updateSettings();setAimReadout();
+})();
+
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+// Multiplayer bridge: server-managed room/password plus peer position/state sync.
+(() => {
+  const net = io(); let connected=false, netRoom=false, mySocketId=null, peerSeen=false, lastNetSend=0;
+  const el=id=>document.getElementById(id);
+  function message(t){ const n=el('roomMessage'); if(n)n.textContent=t; }
+  function setStatus(t){const n=el('roomStatus'); if(n)n.textContent=t;}
+  net.on('connect',()=>{connected=true;mySocketId=net.id;message('온라인 서버 연결됨 · 방을 만들거나 코드로 참가하세요.');});
+  net.on('disconnect',()=>{connected=false;netRoom=false;setStatus('SERVER DISCONNECTED');message('서버 연결이 끊어졌습니다. 잠시 후 새로고침해 주세요.');});
+  net.on('room-update',d=>{setStatus(`ONLINE ${d.code} · ${d.players} PLAYER(S)`);});
+  net.on('match-start',()=>{ if(!playing) startGame(); showToast('ONLINE MATCH START'); });
+  net.on('peer-left',()=>{peerSeen=false; rivalPlayer.hasBall=false; message('상대 플레이어 연결이 끊어졌습니다.'); showToast('OPPONENT DISCONNECTED');});
+  net.on('peer-state',packet=>{
+    const s=packet&&packet.state;if(!s)return; peerSeen=true;
+    rivalPlayer.x=s.x; rivalPlayer.z=s.z; rivalPlayer.hasBall=s.hasBall; rivalPlayer.jump=s.jump||0;
+    // Keep score perspective local: peer's own score is our opponent score.
+    if(Number.isFinite(s.score)) rival=s.score;
+    if(s.ball && (s.ball.loose || s.hasBall)){
+      // Only adopt the peer ball snapshot when they have possession or it is loose.
+      if(s.hasBall || s.ball.loose){ ball.x=s.ball.x; ball.z=s.ball.z; ball.y=s.ball.y; if(s.ball.loose){ball.flight=0;ball.loose=true;ball.kind='loose';} }
+    }
+  });
+  // Let the normal create handler generate the three-character code, then register it.
+  el('createBtn')?.addEventListener('click',()=>setTimeout(()=>{
+    if(!connected){message('서버에 연결되지 않았습니다. 배포된 서버 주소에서 접속해 주세요.');return;}
+    net.emit('create-room',{code:roomCode,password:el('roomPass')?.value||'',mode:mode},res=>{
+      if(!res?.ok){message(res?.message||'방 생성 실패');return;} netRoom=true;setStatus(`ONLINE ROOM ${res.code}`);message(`온라인 방 생성 완료! 코드 ${res.code}와 비밀번호를 친구에게 알려주세요.`);
+    });
+  },0));
+  // Replace the local-only join button handler with server join.
+  el('joinBtn')?.addEventListener('click',e=>{
+    e.preventDefault();e.stopImmediatePropagation();
+    if(!connected){message('서버 연결을 기다리는 중입니다.');return;}
+    const code=(el('roomCodeInput')?.value||'').trim().toUpperCase();
+    net.emit('join-room',{code,password:el('joinPass')?.value||''},res=>{
+      if(!res?.ok){message(res?.message||'참가 실패');return;} netRoom=true;roomCode=res.code;created=true;mode=res.mode||mode;setStatus(`ONLINE ROOM ${res.code}`);message(`방 참가 성공! ${res.players}명 접속 중입니다. 방장이 시작하면 경기가 시작됩니다.`);
+    });
+  },true);
+  // A room owner starts the network match; practice mode remains local.
+  el('startBtn')?.addEventListener('click',()=>{if(netRoom)net.emit('start-match');},true);
+  // Replace local-only join limitations and show the current network connection.
+  window.addEventListener('keydown',()=>{},true);
+  function sendState(now){
+    if(netRoom && connected && playing && now-lastNetSend>50){lastNetSend=now;net.emit('player-state',{x:player.x,z:player.z,jump:player.jump,hasBall:player.hasBall,score,rivalScore:rival,ball:{x:ball.x,z:ball.z,y:ball.y,flight:ball.flight,loose:!!ball.loose,kind:ball.kind},playing});}
+    requestAnimationFrame(sendState);
+  }
+  requestAnimationFrame(sendState);
+  window.COURT_CLASH_NETWORK={get connected(){return connected;},get inRoom(){return netRoom;},get opponentConnected(){return peerSeen;}};
+})();
+</script>
+
+</body>
+</html>
