@@ -1,464 +1,266 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>COURT CLASH - Online Basketball</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COURT CLASH</title>
 <script src="/socket.io/socket.io.js"></script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#09111f;color:#f4f7ff;font-family:Arial,sans-serif}
-main{max-width:1050px;margin:auto;padding:20px}
-h1{color:#ff914d;margin-bottom:5px}
-.sub{color:#aab8cf;margin-top:0}
-.panel{background:#141f32;border:1px solid #2c3c55;border-radius:15px;padding:18px;margin:15px 0}
-input,select,button{font:inherit;border-radius:8px;padding:12px;border:1px solid #41536e}
-input,select{background:#091525;color:white;max-width:100%;width:220px}
-button{background:#ff914d;color:#151a24;font-weight:bold;cursor:pointer;margin:4px 3px 4px 0}
-button.secondary{background:#26364e;color:white}
-#message{min-height:25px;color:#9ee8b1;margin-top:12px;overflow-wrap:anywhere}
-#status{color:#8ed5ff;font-weight:bold}
-#court{display:block;width:100%;background:#b87943;border-radius:12px;touch-action:none}
-#gameinfo{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0}
-.score{font-size:23px;font-weight:bold}
-.small{font-size:13px;color:#b4c1d6}
+main{max-width:1000px;margin:auto;padding:20px}
+h1{color:#ff914d}
+.panel{background:#141f32;border:1px solid #30405a;border-radius:14px;padding:18px;margin:15px 0}
+input,select,button{font:inherit;padding:11px;border-radius:8px;margin:4px}
+input,select{background:#091525;color:white;border:1px solid #41536e;max-width:100%}
+button{background:#ff914d;border:0;font-weight:bold;cursor:pointer}
+.secondary{background:#30405a;color:white}
+#status{color:#8ed5ff}
+#message{color:#9ee8b1;min-height:25px}
+#court{display:block;width:100%;background:#b87943;border-radius:10px}
+.score{font-size:22px;font-weight:bold}
+.small{font-size:13px;color:#bdc9dc}
 </style>
 </head>
 <body>
 <main>
-  <h1>🏀 COURT CLASH</h1>
-  <p class="sub">ONLINE BASKETBALL · 친구와 함께 플레이</p>
+<h1>🏀 COURT CLASH</h1>
+<p>ONLINE BASKETBALL</p>
 
-  <section class="panel">
-    <h2>온라인 방</h2>
-    <p id="status">서버 연결 중...</p>
-    <div>
-      <label>경기 모드
-        <select id="mode">
-          <option value="1v1">1 VS 1</option>
-          <option value="2v2">2 VS 2</option>
-        </select>
-      </label>
-    </div>
-    <p>
-      <label>방 비밀번호
-        <input id="password" type="password" maxlength="20"
-          placeholder="비밀번호 (없어도 됨)">
-      </label>
-    </p>
-    <button id="create">온라인 방 만들기</button>
-    <hr style="border-color:#30405a;margin:18px 0">
-    <p>
-      <label>친구 방 코드
-        <input id="joinCode" maxlength="3" placeholder="예: ABC"
-          style="text-transform:uppercase">
-      </label>
-    </p>
-    <p>
-      <label>방 비밀번호
-        <input id="joinPassword" type="password" placeholder="방 비밀번호">
-      </label>
-    </p>
-    <button id="join" class="secondary">친구 방 참가</button>
-    <div id="message" role="status">서버에 연결하는 중입니다.</div>
-  </section>
+<section class="panel">
+<h2>온라인 멀티플레이</h2>
+<p id="status">서버 연결 중...</p>
+<p>경기 모드
+<select id="mode">
+<option value="1v1">1 VS 1</option>
+<option value="2v2">2 VS 2</option>
+</select></p>
+<p>방 생성 비밀번호
+<input id="password" type="password" placeholder="비밀번호 (선택)"></p>
+<button id="create">온라인 방 만들기</button>
+<hr>
+<p>친구 방 코드
+<input id="joinCode" maxlength="3" placeholder="ABC"></p>
+<p>방 비밀번호
+<input id="joinPassword" type="password" placeholder="비밀번호"></p>
+<button id="join" class="secondary">친구 방 참가</button>
+<p id="message">서버에 연결하는 중입니다.</p>
+</section>
 
-  <section class="panel">
-    <div id="gameinfo">
-      <span class="score">YOU <span id="myScore">0</span></span>
-      <span id="gameState">경기 대기 중</span>
-      <span class="score">OPPONENT <span id="opScore">0</span></span>
-    </div>
-    <canvas id="court" width="900" height="520"></canvas>
-    <p>
-      <button id="start">경기 시작</button>
-      <button id="reset" class="secondary">내 위치 초기화</button>
-    </p>
-    <p class="small">
-      조작: W A S D 또는 방향키로 이동 · SPACE로 점프 · R로 슛
-      <br>먼저 온라인 방을 만들거나 친구의 방에 참가하세요.
-    </p>
-  </section>
+<section class="panel">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+<span class="score">YOU <span id="myScore">0</span></span>
+<span id="gameState">경기 대기 중</span>
+<span class="score">OPPONENT <span id="opScore">0</span></span>
+</div>
+<canvas id="court" width="900" height="520"></canvas>
+<p><button id="start">경기 시작</button>
+<button id="reset" class="secondary">위치 초기화</button></p>
+<p class="small">WASD 또는 방향키: 이동 · SPACE: 점프 · R: 슛</p>
+</section>
 </main>
 
 <script>
 (() => {
-  const $ = id => document.getElementById(id);
-  const canvas = $('court');
-  const ctx = canvas.getContext('2d');
+const $=id=>document.getElementById(id);
+const canvas=$('court'),ctx=canvas.getContext('2d');
+const net=io();
 
-  const net = io();
-  let connected = false;
-  let inRoom = false;
-  let playing = false;
-  let isHost = false;
-  let roomCode = '';
-  let opponent = null;
-  let lastSend = 0;
-  let lastFrame = 0;
-  let keys = {};
-  let score = 0;
-  let opponentScore = 0;
-  let shotCooldown = 0;
+let connected=false,inRoom=false,playing=false,isHost=false;
+let roomCode='',opponent=null,lastSend=0,lastFrame=0;
+let keys={},score=0,opponentScore=0,shotCooldown=0;
 
-  const player = {
-    x: 0.5, y: 0.78, jump: 0, hasBall: true
-  };
+const player={x:.5,y:.78,jump:0,hasBall:true};
 
-  function say(text) {
-    $('message').textContent = text;
-  }
+function say(t){$('message').textContent=t}
+function status(t){$('status').textContent=t}
+function randomCode(){
+ const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+ return Array.from({length:3},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+function scores(){
+ $('myScore').textContent=score;
+ $('opScore').textContent=opponentScore;
+}
 
-  function setStatus(text) {
-    $('status').textContent = text;
-  }
+net.on('connect',()=>{
+ connected=true;status('서버 연결 완료');
+ say('방을 만들거나 친구 방에 참가하세요.');
+});
+net.on('connect_error',()=>{
+ connected=false;status('서버 연결 실패');
+ say('서버 연결에 실패했습니다. 잠시 후 새로고침하세요.');
+});
+net.on('disconnect',()=>{
+ connected=false;inRoom=false;playing=false;opponent=null;
+ status('연결 끊김');say('서버 연결이 끊어졌습니다.');
+});
 
-  function randomCode() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    return Array.from({length:3}, () =>
-      chars[Math.floor(Math.random() * chars.length)]
-    ).join('');
-  }
+$('create').onclick=()=>{
+ if(!connected)return say('서버 연결을 기다려 주세요.');
+ if(inRoom)return say('이미 방에 참가 중입니다.');
+ roomCode=randomCode();isHost=true;
+ net.emit('create-room',{
+  code:roomCode,password:$('password').value,mode:$('mode').value
+ },res=>{
+  if(!res||!res.ok){roomCode='';return say(res?.message||'방 생성 실패');}
+  inRoom=true;
+  $('joinCode').value=res.code;
+  status('방 코드 '+res.code);
+  say('방 생성 성공! 친구에게 코드 '+res.code+'를 알려 주세요.');
+ });
+};
 
-  function updateScore() {
-    $('myScore').textContent = score;
-    $('opScore').textContent = opponentScore;
-  }
+$('join').onclick=()=>{
+ if(!connected)return say('서버 연결을 기다려 주세요.');
+ if(inRoom)return say('이미 방에 참가 중입니다.');
+ const code=$('joinCode').value.trim().toUpperCase();
+ if(!/^[A-Z0-9]{3}$/.test(code))return say('방 코드는 3글자여야 합니다.');
+ net.emit('join-room',{
+  code,password:$('joinPassword').value
+ },res=>{
+  if(!res||!res.ok)return say(res?.message||'방 참가 실패');
+  inRoom=true;isHost=false;roomCode=res.code;
+  $('mode').value=res.mode||'1v1';
+  status('방 코드 '+res.code);
+  say('방 참가 성공! 방장이 경기 시작을 눌러 주세요.');
+ });
+};
 
-  net.on('connect', () => {
-    connected = true;
-    setStatus('서버 연결 완료');
-    say('온라인 방을 만들거나 친구 방에 참가하세요.');
+net.on('room-update',d=>{
+ if(d)status('방 '+d.code+' · '+d.players+'명 참가');
+});
+
+$('start').onclick=()=>{
+ if(!inRoom)return say('먼저 온라인 방을 만들거나 참가하세요.');
+ if(!isHost)return say('방장이 경기 시작을 눌러야 합니다.');
+ net.emit('start-match');
+};
+
+net.on('match-start',()=>{
+ playing=true;score=0;opponentScore=0;
+ player.x=.5;player.y=.78;player.jump=0;player.hasBall=true;
+ scores();$('gameState').textContent='경기 진행 중';
+ say('경기 시작! 이동해서 슛을 시도하세요.');
+});
+
+net.on('peer-left',()=>{
+ opponent=null;say('상대방 연결이 끊어졌습니다.');
+});
+net.on('peer-state',packet=>{
+ if(!packet||!packet.state)return;
+ opponent=packet.state;
+ if(typeof opponent.score==='number'){
+  opponentScore=opponent.score;scores();
+ }
+});
+
+function sendState(now){
+ if(inRoom&&connected&&playing&&now-lastSend>50){
+  lastSend=now;
+  net.emit('player-state',{
+   x:(player.x-.5)*9,z:player.y*10,jump:player.jump,
+   hasBall:player.hasBall,score,rivalScore:opponentScore,
+   ball:{x:(player.x-.5)*9,z:player.y*10,y:player.jump,
+    flight:0,loose:false,kind:'ball'},
+   playing
   });
+ }
+ requestAnimationFrame(sendState);
+}
+requestAnimationFrame(sendState);
 
-  net.on('connect_error', () => {
-    connected = false;
-    setStatus('서버 연결 실패');
-    say('서버 연결에 실패했습니다. 잠시 후 다시 시도하세요.');
-  });
+function move(dt){
+ if(!playing)return;
+ let dx=0,dy=0;
+ if(keys.a||keys.arrowleft)dx--;
+ if(keys.d||keys.arrowright)dx++;
+ if(keys.w||keys.arrowup)dy--;
+ if(keys.s||keys.arrowdown)dy++;
+ const len=Math.hypot(dx,dy)||1,speed=.42*dt;
+ player.x=Math.max(.06,Math.min(.94,player.x+dx/len*speed));
+ player.y=Math.max(.12,Math.min(.91,player.y+dy/len*speed));
+ player.jump=Math.max(0,player.jump-dt*2.5);
+ shotCooldown=Math.max(0,shotCooldown-dt);
+}
 
-  net.on('disconnect', () => {
-    connected = false;
-    inRoom = false;
-    playing = false;
-    opponent = null;
-    setStatus('연결 끊김');
-    $('gameState').textContent = '서버 연결 끊김';
-    say('서버 연결이 끊어졌습니다.');
-  });
+function shoot(){
+ if(!playing||shotCooldown>0)return;
+ shotCooldown=1;player.hasBall=false;
+ const distance=Math.hypot(player.x-.5,player.y-.15);
+ const chance=Math.max(.15,.8-distance*.65);
+ if(Math.random()<chance){
+  score+=distance<.25?2:3;say('슛 성공!');
+ }else say('슛 실패!');
+ scores();
+ setTimeout(()=>{player.hasBall=true},500);
+}
 
-  $('create').addEventListener('click', () => {
-    if (!connected) {
-      say('서버 연결을 기다리는 중입니다.');
-      return;
-    }
-    if (inRoom) {
-      say('이미 방에 참가 중입니다. 새로고침 후 다시 시도하세요.');
-      return;
-    }
+window.addEventListener('keydown',e=>{
+ const k=e.key.toLowerCase();
+ if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k))e.preventDefault();
+ keys[k===' '?'space':k]=true;
+ if(k===' '&&playing&&player.jump===0)player.jump=1;
+ if(k==='r'&&!e.repeat)shoot();
+});
+window.addEventListener('keyup',e=>{
+ const k=e.key.toLowerCase();keys[k===' '?'space':k]=false;
+});
+window.addEventListener('blur',()=>{keys={};});
 
-    roomCode = randomCode();
-    isHost = true;
+$('reset').onclick=()=>{
+ player.x=.5;player.y=.78;player.jump=0;
+};
 
-    net.emit('create-room', {
-      code: roomCode,
-      password: $('password').value,
-      mode: $('mode').value
-    }, res => {
-      if (!res || !res.ok) {
-        say(res?.message || '방 생성 실패');
-        roomCode = '';
-        return;
-      }
+function drawPlayer(x,y,color,jump){
+ const px=x*canvas.width,py=y*canvas.height-jump*22;
+ ctx.fillStyle='rgba(0,0,0,.25)';
+ ctx.beginPath();ctx.ellipse(px,y*canvas.height+13,22,8,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=color;ctx.beginPath();ctx.arc(px,py-18,13,0,Math.PI*2);ctx.fill();
+ ctx.fillRect(px-13,py-5,26,29);
+ ctx.strokeStyle='#182233';ctx.lineWidth=6;
+ ctx.beginPath();ctx.moveTo(px-7,py+23);ctx.lineTo(px-10,py+38);
+ ctx.moveTo(px+7,py+23);ctx.lineTo(px+10,py+38);ctx.stroke();
+}
 
-      inRoom = true;
-      setStatus('온라인 방 ' + res.code);
-      $('joinCode').value = res.code;
-      say('방 생성 성공! 친구에게 코드 ' + res.code +
-        '와 비밀번호를 알려 주세요.');
-    });
-  });
+function draw(){
+ const w=canvas.width,h=canvas.height;
+ ctx.clearRect(0,0,w,h);
+ ctx.fillStyle='#b87943';ctx.fillRect(0,0,w,h);
+ ctx.strokeStyle='#ffe0b2';ctx.lineWidth=4;
+ ctx.strokeRect(24,24,w-48,h-48);
+ ctx.beginPath();ctx.moveTo(w/2,24);ctx.lineTo(w/2,h-24);ctx.stroke();
+ ctx.beginPath();ctx.arc(w/2,h/2,65,0,Math.PI*2);ctx.stroke();
+ for(const x of [w*.12,w*.88]){
+  ctx.strokeRect(x-35,h/2-55,70,110);
+  ctx.beginPath();ctx.arc(x,h/2,23,0,Math.PI*2);ctx.stroke();
+ }
+ drawPlayer(player.x,player.y,'#ff633d',player.jump);
+ if(opponent){
+  const ox=Math.max(-4.5,Math.min(4.5,Number(opponent.x)||0));
+  const oz=Math.max(.5,Math.min(10,Number(opponent.z)||5));
+  drawPlayer(.5+ox/9,oz/10,'#43b8ff',Math.max(0,Number(opponent.jump)||0));
+ }
+ if(player.hasBall){
+  const px=player.x*w+20,py=player.y*h-7-player.jump*22;
+  ctx.fillStyle='#f58b24';ctx.beginPath();ctx.arc(px,py,9,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#60320d';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(px-8,py);ctx.lineTo(px+8,py);
+  ctx.moveTo(px,py-8);ctx.lineTo(px,py+8);ctx.stroke();
+ }
+ if(!playing){
+  ctx.fillStyle='rgba(5,12,24,.65)';ctx.fillRect(0,0,w,h);
+  ctx.fillStyle='white';ctx.font='bold 26px Arial';ctx.textAlign='center';
+  ctx.fillText(inRoom?'WAITING FOR MATCH':'CREATE OR JOIN A ROOM',w/2,h/2);
+ }
+}
 
-  $('join').addEventListener('click', () => {
-    if (!connected) {
-      say('서버 연결을 기다리는 중입니다.');
-      return;
-    }
-    if (inRoom) {
-      say('이미 방에 참가 중입니다. 새로고침 후 다시 시도하세요.');
-      return;
-    }
-
-    const code = $('joinCode').value.trim().toUpperCase();
-
-    if (!/^[A-Z0-9]{3}$/.test(code)) {
-      say('방 코드는 영문 또는 숫자 3글자여야 합니다.');
-      return;
-    }
-
-    net.emit('join-room', {
-      code,
-      password: $('joinPassword').value
-    }, res => {
-      if (!res || !res.ok) {
-        say(res?.message || '방 참가 실패');
-        return;
-      }
-
-      inRoom = true;
-      isHost = false;
-      roomCode = res.code;
-      $('mode').value = res.mode || '1v1';
-      setStatus('온라인 방 ' + res.code);
-      say('방 참가 성공! 방장이 경기 시작을 눌러 주세요.');
-    });
-  });
-
-  net.on('room-update', data => {
-    if (!data) return;
-    setStatus('온라인 방 ' + data.code + ' · ' +
-      data.players + '명');
-  });
-
-  $('start').addEventListener('click', () => {
-    if (!inRoom) {
-      say('먼저 온라인 방을 만들거나 참가하세요.');
-      return;
-    }
-    if (!isHost) {
-      say('방장이 경기 시작을 눌러야 합니다.');
-      return;
-    }
-    net.emit('start-match');
-  });
-
-  net.on('match-start', () => {
-    playing = true;
-    score = 0;
-    opponentScore = 0;
-    player.x = 0.5;
-    player.y = 0.78;
-    player.jump = 0;
-    player.hasBall = true;
-    updateScore();
-    $('gameState').textContent = '경기 진행 중';
-    say('경기 시작! WASD 또는 방향키로 이동하세요.');
-  });
-
-  net.on('peer-left', () => {
-    opponent = null;
-    say('상대방 연결이 끊어졌습니다.');
-  });
-
-  net.on('peer-state', packet => {
-    if (!packet || !packet.state) return;
-    opponent = packet.state;
-    if (typeof opponent.score === 'number') {
-      opponentScore = opponent.score;
-      updateScore();
-    }
-  });
-
-  function sendState(now) {
-    if (inRoom && connected && playing && now - lastSend > 50) {
-      lastSend = now;
-      net.emit('player-state', {
-        x: (player.x - 0.5) * 9,
-        z: player.y * 10,
-        jump: player.jump,
-        hasBall: player.hasBall,
-        score,
-        rivalScore: opponentScore,
-        ball: {
-          x: (player.x - 0.5) * 9,
-          z: player.y * 10,
-          y: player.jump,
-          flight: 0,
-          loose: false,
-          kind: 'ball'
-        },
-        playing
-      });
-    }
-    requestAnimationFrame(sendState);
-  }
-  requestAnimationFrame(sendState);
-
-  function move(dt) {
-    if (!playing) return;
-
-    let dx = 0, dy = 0;
-    if (keys.a || keys.arrowleft) dx--;
-    if (keys.d || keys.arrowright) dx++;
-    if (keys.w || keys.arrowup) dy--;
-    if (keys.s || keys.arrowdown) dy++;
-
-    const len = Math.hypot(dx, dy) || 1;
-    const speed = 0.42 * dt;
-
-    player.x = Math.max(0.06, Math.min(0.94,
-      player.x + dx / len * speed));
-    player.y = Math.max(0.12, Math.min(0.91,
-      player.y + dy / len * speed));
-
-    player.jump = Math.max(0, player.jump - dt * 2.5);
-    shotCooldown = Math.max(0, shotCooldown - dt);
-  }
-
-  function shoot() {
-    if (!playing || shotCooldown > 0) return;
-    shotCooldown = 1;
-    player.hasBall = false;
-
-    // 간단한 시제품 슛 판정
-    const distance = Math.hypot(player.x - 0.5, player.y - 0.15);
-    const chance = Math.max(0.15, 0.8 - distance * 0.65);
-
-    if (Math.random() < chance) {
-      score += distance < 0.25 ? 2 : 3;
-      say('슛 성공!');
-    } else {
-      say('슛 실패!');
-    }
-
-    updateScore();
-    setTimeout(() => {
-      player.hasBall = true;
-    }, 500);
-  }
-
-  window.addEventListener('keydown', e => {
-    const k = e.key.toLowerCase();
-    if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)) {
-      e.preventDefault();
-    }
-    keys[k === ' ' ? 'space' : k] = true;
-
-    if (k === ' ' && playing && player.jump === 0) {
-      player.jump = 1;
-    }
-    if (k === 'r' && !e.repeat) shoot();
-  });
-
-  window.addEventListener('keyup', e => {
-    const k = e.key.toLowerCase();
-    keys[k === ' ' ? 'space' : k] = false;
-  });
-
-  window.addEventListener('blur', () => {
-    keys = {};
-  });
-
-  $('reset').addEventListener('click', () => {
-    player.x = 0.5;
-    player.y = 0.78;
-    player.jump = 0;
-  });
-
-  function drawPlayer(x, y, color, jumping) {
-    const px = x * canvas.width;
-    const py = y * canvas.height - jumping * 22;
-
-    ctx.fillStyle = 'rgba(0,0,0,.25)';
-    ctx.beginPath();
-    ctx.ellipse(px, y * canvas.height + 13, 22, 8, 0, 0,
-      Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(px, py - 18, 13, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillRect(px - 13, py - 5, 26, 29);
-
-    ctx.strokeStyle = '#182233';
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(px - 7, py + 23);
-    ctx.lineTo(px - 10, py + 38);
-    ctx.moveTo(px + 7, py + 23);
-    ctx.lineTo(px + 10, py + 38);
-    ctx.stroke();
-  }
-
-  function draw() {
-    const w = canvas.width, h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    ctx.fillStyle = '#b87943';
-    ctx.fillRect(0, 0, w, h);
-
-    ctx.strokeStyle = '#ffe0b2';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(24, 24, w - 48, h - 48);
-
-    ctx.beginPath();
-    ctx.moveTo(w / 2, 24);
-    ctx.lineTo(w / 2, h - 24);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(w / 2, h / 2, 65, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // 양쪽 골대
-    for (const x of [w * 0.12, w * 0.88]) {
-      ctx.strokeRect(x - 35, h / 2 - 55, 70, 110);
-      ctx.beginPath();
-      ctx.arc(x, h / 2, 23, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-
-    drawPlayer(player.x, player.y, '#ff633d', player.jump);
-
-    if (opponent) {
-      const ox = Math.max(-4.5, Math.min(4.5, Number(opponent.x) || 0));
-      const oz = Math.max(0.5, Math.min(10, Number(opponent.z) || 5));
-      drawPlayer(0.5 + ox / 9, oz / 10, '#43b8ff',
-        Math.max(0, Number(opponent.jump) || 0));
-    }
-
-    // 공
-    if (player.hasBall) {
-      const px = player.x * w + 20;
-      const py = player.y * h - 7 - player.jump * 22;
-
-      ctx.fillStyle = '#f58b24';
-      ctx.beginPath();
-      ctx.arc(px, py, 9, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.strokeStyle = '#60320d';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(px - 8, py);
-      ctx.lineTo(px + 8, py);
-      ctx.moveTo(px, py - 8);
-      ctx.lineTo(px, py + 8);
-      ctx.stroke();
-    }
-
-    if (!playing) {
-      ctx.fillStyle = 'rgba(5,12,24,.65)';
-      ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 30px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText(inRoom ? 'WAITING FOR MATCH' : 'CREATE OR JOIN A ROOM',
-        w / 2, h / 2);
-    }
-  }
-
-  function loop(now) {
-    const dt = Math.min(0.05, (now - lastFrame) / 1000 || 0.016);
-    lastFrame = now;
-    move(dt);
-    draw();
-    requestAnimationFrame(loop);
-  }
-
-  requestAnimationFrame(loop);
+function loop(now){
+ const dt=Math.min(.05,(now-lastFrame)/1000||.016);
+ lastFrame=now;move(dt);draw();requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
 })();
 </script>
 </body>
