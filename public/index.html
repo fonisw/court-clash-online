@@ -705,55 +705,145 @@ updateShotControls();draw();updateSettings();setAimReadout();
 </script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-// Multiplayer bridge: server-managed room/password plus peer position/state sync.
+<script src="/socket.io/socket.io.js"></script>
+<script>
 (() => {
-  const net = io(); let connected=false, netRoom=false, mySocketId=null, peerSeen=false, lastNetSend=0;
-  const el=id=>document.getElementById(id);
-  function message(t){ const n=el('roomMessage'); if(n)n.textContent=t; }
-  function setStatus(t){const n=el('roomStatus'); if(n)n.textContent=t;}
-  net.on('connect',()=>{connected=true;mySocketId=net.id;message('온라인 서버 연결됨 · 방을 만들거나 코드로 참가하세요.');});
-  net.on('disconnect',()=>{connected=false;netRoom=false;setStatus('SERVER DISCONNECTED');message('서버 연결이 끊어졌습니다. 잠시 후 새로고침해 주세요.');});
-  net.on('room-update',d=>{setStatus(`ONLINE ${d.code} · ${d.players} PLAYER(S)`);});
-  net.on('match-start',()=>{ if(!playing) startGame(); showToast('ONLINE MATCH START'); });
-  net.on('peer-left',()=>{peerSeen=false; rivalPlayer.hasBall=false; message('상대 플레이어 연결이 끊어졌습니다.'); showToast('OPPONENT DISCONNECTED');});
-  net.on('peer-state',packet=>{
-    const s=packet&&packet.state;if(!s)return; peerSeen=true;
-    rivalPlayer.x=s.x; rivalPlayer.z=s.z; rivalPlayer.hasBall=s.hasBall; rivalPlayer.jump=s.jump||0;
-    // Keep score perspective local: peer's own score is our opponent score.
-    if(Number.isFinite(s.score)) rival=s.score;
-    if(s.ball && (s.ball.loose || s.hasBall)){
-      // Only adopt the peer ball snapshot when they have possession or it is loose.
-      if(s.hasBall || s.ball.loose){ ball.x=s.ball.x; ball.z=s.ball.z; ball.y=s.ball.y; if(s.ball.loose){ball.flight=0;ball.loose=true;ball.kind='loose';} }
-    }
-  });
-  // Let the normal create handler generate the three-character code, then register it.
-  el('createBtn')?.addEventListener('click',()=>setTimeout(()=>{
-    if(!connected){message('서버에 연결되지 않았습니다. 배포된 서버 주소에서 접속해 주세요.');return;}
-    net.emit('create-room',{code:(el('roomStatus')?.textContent||'').replace(/^ROOM\s*/,'').trim(),password:el('roomPass')?.value||'',mode:mode},res=>{
-      if(!res?.ok){message(res?.message||'방 생성 실패');return;} netRoom=true;setStatus(`ONLINE ROOM ${res.code}`);message(`온라인 방 생성 완료! 코드 ${res.code}와 비밀번호를 친구에게 알려주세요.`);
-    });
-  },0));
-  // Replace the local-only join button handler with server join.
-  el('joinBtn')?.addEventListener('click',e=>{
-    e.preventDefault();e.stopImmediatePropagation();
-    if(!connected){message('서버 연결을 기다리는 중입니다.');return;}
-    const code=(el('roomCodeInput')?.value||'').trim().toUpperCase();
-    net.emit('join-room',{code,password:el('joinPass')?.value||''},res=>{
-      if(!res?.ok){message(res?.message||'참가 실패');return;} netRoom=true;roomCode=res.code;created=true;mode=res.mode||mode;setStatus(`ONLINE ROOM ${res.code}`);message(`방 참가 성공! ${res.players}명 접속 중입니다. 방장이 시작하면 경기가 시작됩니다.`);
-    });
-  },true);
-  // A room owner starts the network match; practice mode remains local.
-  el('startBtn')?.addEventListener('click',()=>{if(netRoom)net.emit('start-match');},true);
-  // Replace local-only join limitations and show the current network connection.
-  window.addEventListener('keydown',()=>{},true);
-  function sendState(now){
-    if(netRoom && connected && playing && now-lastNetSend>50){lastNetSend=now;net.emit('player-state',{x:player.x,z:player.z,jump:player.jump,hasBall:player.hasBall,score,rivalScore:rival,ball:{x:ball.x,z:ball.z,y:ball.y,flight:ball.flight,loose:!!ball.loose,kind:ball.kind},playing});}
-    requestAnimationFrame(sendState);
+  const net = io();
+  const el = id => document.getElementById(id);
+
+  let connected = false;
+  let netRoom = false;
+  let roomStarted = false;
+  let lastError = '';
+
+  function message(text) {
+    if (el('roomMessage')) el('roomMessage').textContent = text;
   }
-  requestAnimationFrame(sendState);
-  window.COURT_CLASH_NETWORK={get connected(){return connected;},get inRoom(){return netRoom;},get opponentConnected(){return peerSeen;}};
+
+  function status(text) {
+    if (el('roomStatus')) el('roomStatus').textContent = text;
+  }
+
+  function getMode() {
+    return (el('modeLabel')?.textContent || '').includes('2 VS 2')
+      ? '2v2'
+      : '1v1';
+  }
+
+  net.on('connect', () => {
+    connected = true;
+    message('서버 연결 성공! 온라인 방을 만들 수 있습니다.');
+  });
+
+  net.on('connect_error', () => {
+    connected = false;
+    message('서버 연결 실패. 잠시 후 새로고침해 주세요.');
+  });
+
+  net.on('disconnect', () => {
+    connected = false;
+    netRoom = false;
+    status('SERVER DISCONNECTED');
+    message('서버 연결이 끊어졌습니다.');
+  });
+
+  // 방 만들기 버튼을 눌렀을 때 서버에 실제 방 생성 요청
+  el('createBtn')?.addEventListener('click', () => {
+    setTimeout(() => {
+      if (!connected) {
+        message('서버 연결을 기다리는 중입니다.');
+        return;
+      }
+
+      const code = (el('roomStatus')?.textContent || '')
+        .replace(/^ROOM\s*/i, '')
+        .trim()
+        .toUpperCase();
+
+      if (!/^[A-Z0-9]{3}$/.test(code)) {
+        message('방 코드 생성에 실패했습니다. 다시 눌러 주세요.');
+        return;
+      }
+
+      net.emit('create-room', {
+        code,
+        password: el('roomPass')?.value || '',
+        mode: getMode()
+      }, res => {
+        if (!res?.ok) {
+          message(res?.message || '방 생성 실패');
+          return;
+        }
+
+        netRoom = true;
+        status(`ONLINE ROOM ${res.code}`);
+        message(`방 생성 성공! 친구에게 코드 ${res.code}를 알려 주세요.`);
+      });
+    }, 50);
+  });
+
+  // 방 참가 버튼을 서버 연결 방식으로 처리
+  el('joinBtn')?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    if (!connected) {
+      message('서버 연결을 기다리는 중입니다.');
+      return;
+    }
+
+    const code = (el('roomCodeInput')?.value || '')
+      .trim()
+      .toUpperCase();
+
+    if (!/^[A-Z0-9]{3}$/.test(code)) {
+      message('방 코드는 영문 또는 숫자 3글자여야 합니다.');
+      return;
+    }
+
+    net.emit('join-room', {
+      code,
+      password: el('joinPass')?.value || ''
+    }, res => {
+      if (!res?.ok) {
+        message(res?.message || '방 참가 실패');
+        return;
+      }
+
+      netRoom = true;
+      status(`ONLINE ROOM ${res.code}`);
+      message(`방 참가 성공! ${res.players}명이 접속 중입니다.`);
+    });
+  }, true);
+
+  net.on('room-update', data => {
+    if (!data) return;
+    status(`ONLINE ${data.code} · ${data.players} PLAYER(S)`);
+  });
+
+  net.on('match-start', () => {
+    if (roomStarted) return;
+    roomStarted = true;
+    message('경기가 시작되었습니다.');
+    // 기존 게임의 시작 버튼을 이용해 경기 화면 표시
+    el('startBtn')?.click();
+  });
+
+  net.on('peer-left', () => {
+    message('상대방의 연결이 끊어졌습니다.');
+  });
+
+  // 방장이 경기 시작 버튼을 누르면 서버에 알림
+  el('startBtn')?.addEventListener('click', () => {
+    if (netRoom && connected) {
+      net.emit('start-match');
+    }
+  }, true);
+
+  window.COURT_CLASH_NETWORK = {
+    get connected() { return connected; },
+    get inRoom() { return netRoom; }
+  };
 })();
 </script>
-
-</body>
 </html>
